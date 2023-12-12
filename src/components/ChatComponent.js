@@ -1,4 +1,6 @@
 import { useState, useRef } from "react";
+import axios from 'axios'
+
 
 function ChatComponent() {
   const [messages, setMessages] = useState([]);
@@ -14,12 +16,8 @@ function ChatComponent() {
       let inputToSend = input
       setInput("");
       try {
-        const response = await fetch("https://3.81.58.90:3000/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ question: inputToSend }),
+        const response = await axios.post("http://3.81.58.90:3000/test", {
+          question: inputToSend,
         });
 
         if (!response.ok) {
