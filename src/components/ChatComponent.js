@@ -14,7 +14,7 @@ function ChatComponent() {
       let inputToSend = input
       setInput("");
       try {
-        const response = await fetch("http://3.81.58.90:3000/chat", {
+        const response = await fetch("https://3.81.58.90:3000/chat", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
