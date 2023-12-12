@@ -2,4 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+.rossColor {
+    background-color: #00B2A4;
+}
+
 
