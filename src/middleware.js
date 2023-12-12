@@ -1,4 +1,4 @@
-"use server";
+"use client";
 import { NextResponse } from "next/server";
 import { getCookie } from "cookies-next";
 
