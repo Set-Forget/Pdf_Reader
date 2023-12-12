@@ -1,4 +1,4 @@
-'use client'
+'use server'
 import ChatComponent from '../components/ChatComponent';
 
 export default function Home() {
