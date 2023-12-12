@@ -39,7 +39,7 @@ export default function Login() {
           </div>
           <h1 className="text-4xl font-bold text-center text-white">Login</h1>
         </div>
-        <div className="flex-1 flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center mt-10">
           <input
             type="password"
             placeholder="Enter Password"

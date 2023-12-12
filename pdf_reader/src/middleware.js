@@ -7,9 +7,7 @@ export function middleware(request) {
   if (request.url.includes("login")) {
     return NextResponse.next();
   }
-  console.log(request.cookies)
   const userAuthenticated = request.cookies.get('userAuthenticated').value;
-  console.log(userAuthenticated)
   if (userAuthenticated === "true") {
     return NextResponse.next();
   }
