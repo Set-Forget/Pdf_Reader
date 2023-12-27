@@ -159,7 +159,7 @@ function ChatComponent() {
       {/* Contenedor del chat */}
       <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col p-4">
         {/* Mensajes del chat */}
-        <div className="overflow-auto mb-4 flex-grow">
+        <div className="overflow-auto mb-4 flex-grow" onClick={handlePdfClick}>
           {messages.map((message, index) => (
             <div
               key={index}
@@ -176,15 +176,14 @@ function ChatComponent() {
               )}
             </div>
           ))}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
+            </div>
+          )}
         </div>
-
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
-            <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
-            <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
-          </div>
-        )}
 
         {/* Área fija de entrada de texto y botones */}
         <div className="mt-auto flex items-center space-x-2 px-2">
@@ -205,27 +204,26 @@ function ChatComponent() {
         </div>
       </div>
 
-      {/* Contenedor del visor de PDF o mensaje alternativo */}
-      <div className="flex-grow overflow-auto md:w-1/2 bg-gray-100">
+      {/* Contenedor del visor de PDF */}
+      <div className="flex-grow overflow-auto md:w-1/2 bg-gray-100 relative">
         {isIframeOpen && pdfUrl ? (
-          <iframe
-            src={pdfUrl}
-            className="w-full h-full"
-            title="PDF Viewer"
-          ></iframe>
+          <>
+            <iframe
+              src={pdfUrl}
+              className="w-full h-full"
+              title="PDF Viewer"
+            ></iframe>
+            <button
+              onClick={() => setIsIframeOpen(false)}
+              className="absolute top-2 left-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Close PDF
+            </button>
+          </>
         ) : (
           <div className="flex items-center justify-center h-full">
             <span className="text-gray-500 italic">No PDF selected</span>
           </div>
-        )}
-        {/* Botón para cerrar el visor de PDF */}
-        {isIframeOpen && (
-          <button
-            onClick={() => setIsIframeOpen(false)}
-            className="absolute top-2 left-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded md:relative"
-          >
-            Close PDF
-          </button>
         )}
       </div>
     </div>
