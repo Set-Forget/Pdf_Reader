@@ -1,20 +1,15 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import HamburguerMenu from "./HamburgerMenu";
 
 function ChatComponent() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const fileInputRef = useRef(null);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [fileInfo, setFileInfo] = useState({});
-
-  const openPdf = (url) => {
-    setPdfUrl(url);
-  };
+  const [availablePdfs, setAvailablePdfs] = useState([]);
 
   const handleSend = async () => {
     if (input.trim()) {
@@ -43,14 +38,16 @@ function ChatComponent() {
 
         console.log(filesInfo);
         const data = response.data;
+        console.log(data.message);
 
-        const infoRegex =
-          /^Information: The information provided is from the file '(.+?)', page \d+\.$/m;
+        const infoRegex = /Information: ([^,]+),/;
+
         const infoMatch = infoRegex.exec(data.message);
         console.log(infoMatch);
         if (infoMatch) {
           const fileInfo = infoMatch[1].split(".");
-          const filename = fileInfo[0];
+          console.log(fileInfo + " fileInfo");
+          const filename = fileInfo[1];
           const filetype = fileInfo[1];
           const pageMatch = data.message.match(/page (\d+)/);
           const pageNum = pageMatch ? parseInt(pageMatch[1], 10) : null;
@@ -73,7 +70,12 @@ function ChatComponent() {
           if (file) {
             const viewerUrl = `https://docs.google.com/viewer?srcid=${file.id}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
             setFileInfo({ id: file.id, url: viewerUrl, page: pageNum });
-            const modifiedMessage = `Information: The information provided is from the file <span class="pdf-link" data-url="${viewerUrl}">${file.name}</span>, page ${pageNum}`;
+            let modifiedMessage;
+            if (pageNum) {
+              modifiedMessage = `<span class="pdf-link" data-url="${viewerUrl}">${file.name}</span>, page ${pageNum}`;
+            } else {
+              modifiedMessage = `<span class="pdf-link" data-url="${viewerUrl}">${file.name}</span>`;
+            }
             const messageWithHtml = data.message.replace(
               infoMatch[0],
               modifiedMessage
@@ -104,55 +106,26 @@ function ChatComponent() {
     }
   };
 
-  const closePdf = () => {
-    setIsIframeOpen(false);
+  const handlePdfClick = (file) => {
+    const viewerUrl = `https://docs.google.com/viewer?srcid=${file.id}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
+    setPdfUrl(viewerUrl);
+    setIsIframeOpen(true);
   };
 
-  const handlePdfClick = (e) => {
-    const url = e.target.getAttribute("data-url");
-    if (url) {
-      setPdfUrl(url);
-      setIsIframeOpen(true);
-    } else {
-      console.error("URL no encontrada");
-    }
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-  };
-
-  const handleFileUpload = async () => {
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-
+  useEffect(() => {
+    const fetchFiles = async () => {
       try {
-        setIsLoading(true);
-        const response = await axios.post(
-          "https://11b7-2600-1f18-762e-6b00-f71e-4c67-c445-5932.ngrok-free.app/upload",
-          formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+        const response = await axios.get(
+          "https://script.google.com/macros/s/AKfycbxKzgFuBbqI2UsZXJDzR-VcIa1T6eCByAb6wNN65ouFw8ZIr8rU_EMH8TVF3_JZ_LOu1g/exec?route=getFiles"
         );
-
-        if (response.data.message) {
-          alert("File uploaded successfully");
-        }
-
-        setSelectedFile(null);
+        setAvailablePdfs(response.data.files.pdfs);
       } catch (error) {
-        console.error("Error uploading file:", error);
-        alert("Error uploading file");
-      } finally {
-        setIsLoading(false);
+        console.error("Error al obtener archivos:", error);
       }
-    }
-  };
+    };
 
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
+    fetchFiles();
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row h-full bg-white border rounded overflow-hidden">
@@ -205,6 +178,7 @@ function ChatComponent() {
       </div>
 
       {/* Contenedor del visor de PDF */}
+
       <div className="flex-grow overflow-auto md:w-1/2 bg-gray-100 relative">
         {isIframeOpen && pdfUrl ? (
           <>
@@ -221,8 +195,18 @@ function ChatComponent() {
             </button>
           </>
         ) : (
-          <div className="flex items-center justify-center h-full">
-            <span className="text-gray-500 italic">No PDF selected</span>
+          <div className="w-full h-full flex justify-center items-center p-4">
+            <div className="flex flex-col items-center">
+              {availablePdfs.map((file) => ( 
+                <button
+                  key={file.id}
+                  onClick={() => handlePdfClick(file)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-2"
+                >
+                  {file.name}
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>
