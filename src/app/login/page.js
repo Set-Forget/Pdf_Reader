@@ -2,20 +2,23 @@
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Toaster, toast } from 'sonner';
 
 // setCookie('key', 'value', options);
 
 export default function Login() {
     const [password, setPassword] = useState("");
     const router = useRouter();
+    const USER_PASSWORD = "admin"
 
     const handleSubmit = () => {
-        if (password === "admin") {
+        if (password === USER_PASSWORD) {
           document.cookie = "userAuthenticated=true; path=/";
     
           router.push("/");
         } else {
           console.log("Contraseña incorrecta");
+          toast.error('Invalid password')
         }
       };
     
@@ -28,6 +31,7 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center h-screen rossColor">
+      <Toaster position="top-right" richColors closeButton />
       <div className="w-full h-full flex flex-col">
         <div className="flex flex-col items-center mb-6">
           <div className="bg-white p-2 rounded-full mt-2">
