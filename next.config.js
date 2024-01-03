@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+    env: {
+        USER_PASSWORD: 'admin',
+    },
+  }
 
 module.exports = nextConfig
