@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
         <div className="flex justify-center items-center h-screen rossColor">
           <div className="w-full h-full flex flex-col">
             <Header />
-            <div className="flex-1 overflow-auto p-4 flex place-items-center justify-center">
+            <div className="flex-1 overflow-auto p-4 flex flex-col">
               {children}
             </div>
           </div>

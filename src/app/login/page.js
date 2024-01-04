@@ -30,19 +30,9 @@ export default function Login() {
 
 
   return (
-    <div className="flex justify-center items-center h-screen rossColor">
+    <div className="flex flex-col rossColor">
       <Toaster position="top-right" richColors closeButton />
-      <div className="w-full h-full flex flex-col">
-        <div className="flex flex-col items-center mb-6">
-          <div className="bg-white p-2 rounded-full mt-2">
-            <img
-              src="../favicon.ico"
-              alt="Logo"
-              className="w-12 h-12 rounded-full"
-            />
-          </div>
-          <h1 className="text-4xl font-bold text-center text-white">Login</h1>
-        </div>
+        <h1 className="text-4xl font-bold text-center text-white justify-self-start">Login</h1>
         <div className="flex flex-col items-center justify-center mt-10">
           <input
             type="password"
@@ -58,7 +48,6 @@ export default function Login() {
             Submit
           </button>
         </div>
-      </div>
     </div>
   );
 }
