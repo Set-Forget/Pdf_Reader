@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 .rossColor {
+    /* background: linear-gradient(180deg, #05293e, #033652); */
     background-color: #00B2A4;
 }
 
