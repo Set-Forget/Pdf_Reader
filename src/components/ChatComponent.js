@@ -132,7 +132,7 @@ function ChatComponent() {
       {/* Contenedor del chat */}
       <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col p-4">
         {/* Mensajes del chat */}
-        <div className="overflow-auto mb-4 flex-grow" onClick={handlePdfClick}>
+        <div className="overflow-auto mb-4 flex-grow">
           {messages.map((message, index) => (
             <div
               key={index}
