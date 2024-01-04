@@ -13,7 +13,9 @@ export default function Home() {
   const [files, setFiles] = useState([])
 
   useEffect( ()=>{
-    setFiles(FilesList)
+    setTimeout(() => {
+      setFiles(FilesList)
+    }, 2000);
   }, [])
 
   return (
