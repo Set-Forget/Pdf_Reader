@@ -3,6 +3,7 @@ import AddFileBtn from "@/components/HomePage/addFile";
 import TableSkeletonComponent from "@/components/HomePage/TableSkeleton";
 import TableBodyComponent from "@/components/HomePage/TableBody";
 import { useEffect, useState } from "react";
+import GetAllFiles from "@/services/getAllFiles";
 
 const FilesList = [
   {title: "file 1", id: "a"},
@@ -15,7 +16,14 @@ export default function Home() {
   const [files, setFiles] = useState([])
   const [loadFiles, setLoadFiles] = useState(true)
 
+  const getFiles = () => {
+    GetAllFiles().then( list => {
+      console.log(list);
+    })
+  }
+
   useEffect( ()=>{
+    getFiles()
     setTimeout(() => {
       setFiles(FilesList)
       setLoadFiles(false)
