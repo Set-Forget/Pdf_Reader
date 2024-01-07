@@ -1,10 +1,8 @@
-import HamburguerMenu from "./HamburgerMenu"
 import Link from "next/link"
 
 export default function Header() {
     return(
       <div className="flex justify-between items-center p-4 bg-white shadow-md">
-        <HamburguerMenu />
         <Link href="/" className="flex items-center">
           <img
             src="favicon.ico"
