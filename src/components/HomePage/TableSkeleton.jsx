@@ -4,7 +4,13 @@ export default function TableSkeletonComponent() {
       <tbody className="divide-y divide-gray-200 animate-pulse">
       {skeletonRows.map((file, index) => (
         <tr key={index}>
-          <td className="py-4 pl-4 pr-3 text-sm font-medium">
+          <td className="py-4 pl-4 pr-3 text-sm font-medium w-1/3">
+            <div className="h-2 bg-slate-700 rounded"></div>
+          </td>
+          <td className="py-4 pl-4 pr-3 text-sm font-medium w-1/3">
+            <div className="h-2 bg-slate-700 rounded"></div>
+          </td>
+          <td className="py-4 pl-4 pr-3 text-sm font-medium w-1/3">
             <div className="h-2 bg-slate-700 rounded"></div>
           </td>
           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium flex gap-2 justify-end">

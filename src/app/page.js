@@ -37,6 +37,12 @@ export default function Home() {
           <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 uppercase">
             File Name
           </th>
+          <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 uppercase">
+            File Type
+          </th>
+          <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 uppercase">
+            File Link
+          </th>
         </tr>
       </thead>
       { loadFiles ? 
