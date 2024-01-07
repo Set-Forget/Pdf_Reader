@@ -1,9 +1,13 @@
+import endpoints from "@/pages/api/endpoints";
+
 export default async function GetAllFiles () {
-    const baseApi = '/api/files/list'
+    
     try {    
-        const response = await fetch(baseApi)
+        const baseUrl = endpoints.files.urlBase;
+        const endpoint = endpoints.files.list;
+        const response = await fetch(baseUrl + endpoint)
         if (!response.ok) {
-            throw new Error('Error en la carga de usuario')
+            throw new Error('Error en la carga de archivos')
         }
         return await response.json()
     } catch (error) {

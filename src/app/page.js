@@ -5,29 +5,19 @@ import TableBodyComponent from "@/components/HomePage/TableBody";
 import { useEffect, useState } from "react";
 import GetAllFiles from "@/services/getAllFiles";
 
-const FilesList = [
-  {title: "file 1", id: "a"},
-  {title: "file 2", id: "ab"},
-  {title: "file 3", id: "abc"},
-  {title: "file 4", id: "abcd"},
-]
-
 export default function Home() {
   const [files, setFiles] = useState([])
   const [loadFiles, setLoadFiles] = useState(true)
-
-  const getFiles = () => {
-    GetAllFiles().then( list => {
-      console.log(list);
-    })
-  }
-
+  
   useEffect( ()=>{
-    getFiles()
-    setTimeout(() => {
-      setFiles(FilesList)
+    
+    GetAllFiles().then( list => {
+      const excels = list.files.excels.map( f => { return {title: f.name, id:f.id, url:f.url, type:"Excel" } })
+      const pdfs = list.files.pdfs.map( f => { return {title: f.name, id:f.id, url:f.url, type:"PDF" } })
+      const fileList = [...pdfs, ...excels]
+      setFiles(fileList)
       setLoadFiles(false)
-    }, 2000);
+    })
   }, [])
 
   return (

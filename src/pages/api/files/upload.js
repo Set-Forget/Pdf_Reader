@@ -1,14 +1,14 @@
 import formidable from 'formidable';
 import fs from 'fs';
 import axios from "axios";
-import endpoints from '../enpoints';
+import endpoints from '../endpoints';
 
 export default async function handlerUploadFile(req, res) {
-  if (req.method === 'POST') { 
+  if (req.method === 'POST') {
     const form = formidable({});
-  let fields;
-  let files;
-  try {
+    let fields;
+    let files;
+    try {
       [fields, files] = await form.parse(req);
       console.log("Files: ", files)
       // Leer el archivo y convertirlo a base64
@@ -29,15 +29,15 @@ export default async function handlerUploadFile(req, res) {
       //     'Content-Type': 'multipart/form-data'
       //   }
       // });
-      
+
       // const data = response.data;
       res.status(200).json({ message: 'Archivo subido con éxito', data: gsFormData });
-  } catch (err) {
+    } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Error al procesar la carga del archivo' });
       return;
-  } 
-  } 
+    }
+  }
   else {
     res.setHeader('Allow', ['POST']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
