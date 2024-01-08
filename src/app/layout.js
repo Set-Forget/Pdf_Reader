@@ -1,6 +1,8 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
+import { AppContext } from '@/context/FilesContext'
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,14 +15,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex justify-center items-center h-screen bg-ross-green">
-          <div className="w-full h-full flex flex-col">
-            <Header />
-            <div className="flex-1 overflow-auto p-4 flex flex-col">
-              {children}
+        <AppContext>
+          <Toaster position="top-right" richColors closeButton />
+          <div className="flex justify-center items-center h-screen bg-ross-green">
+            <div className="w-full h-full flex flex-col">
+              <Header />
+              <div className="flex-1 overflow-auto p-4 flex flex-col">
+                {children}
+              </div>
             </div>
           </div>
-        </div>
+        </AppContext>
       </body>
     </html>
   )

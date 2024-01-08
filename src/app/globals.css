@@ -7,11 +7,11 @@
     background-color: #00B2A4;
 }
 
-.loader {
+.onLoad {
     --w:10ch;
     font-weight: bold;
     font-family: monospace;
-    font-size: 30px;
+    font-size: 1.5rem;
     letter-spacing: var(--w);
     width: var(--w);
     overflow: hidden;
@@ -19,7 +19,7 @@
     color: #0000;
     animation: l40 2s infinite;
   }
-  .loader:before {
+  .onLoad:before {
     content:"Loading...";
   }
   
@@ -79,4 +79,45 @@
           calc( 0*var(--w)) -20px #0000,calc(-1*var(--w)) -20px #0000,calc(-2*var(--w)) -20px #0000,calc(-3*var(--w)) -20px #0000,calc(-4*var(--w)) -20px #0000, 
           calc(-5*var(--w)) -20px #0000,calc(-6*var(--w)) -20px #0000,calc(-7*var(--w)) -20px #0000,calc(-8*var(--w)) -20px #0000,calc(-9*var(--w)) -20px #0000;
     }
+}
+
+.onUpload {
+      width: fit-content;
+      font-weight: bold;
+      font-family: monospace;
+      background:linear-gradient(90deg,#000 50%,#0000 0) right/200% 100%;
+      animation: l21 2s infinite linear;
+}
+.onUpload::before {
+      content :"Uploading...";
+      color: #0000;
+      padding: .5rem;
+      background: inherit;
+      background-image: linear-gradient(90deg,#fff 50%,#000 0);
+      -webkit-background-clip:text;
+            background-clip:text;
+}
+
+@keyframes l21{
+      100%{background-position: left}
+}
+
+.onDelete {
+      width: 1.2rem;
+      height: 1.2rem;
+      aspect-ratio: .75;
+      --c: no-repeat linear-gradient(#f00 0 0);
+      background: 
+        var(--c) 0%   50%,
+        var(--c) 50%  50%,
+        var(--c) 100% 50%;
+      animation: l7 1s infinite linear alternate;
+}
+@keyframes l7 {
+      0%  {background-size: 20% 50% ,20% 50% ,20% 50% }
+      20% {background-size: 20% 20% ,20% 50% ,20% 50% }
+      40% {background-size: 20% 100%,20% 20% ,20% 50% }
+      60% {background-size: 20% 50% ,20% 100%,20% 20% }
+      80% {background-size: 20% 50% ,20% 50% ,20% 100%}
+      100%{background-size: 20% 50% ,20% 50% ,20% 50% }
 }

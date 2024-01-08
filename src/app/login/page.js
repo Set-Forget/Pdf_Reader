@@ -2,7 +2,7 @@
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 
 // setCookie('key', 'value', options);
 
@@ -44,7 +44,6 @@ export default function Login() {
 
   return (
     <div className="flex flex-col rossColor gap-4">
-      <Toaster position="top-right" richColors closeButton />
         <h1 className="text-4xl font-bold text-center text-white justify-self-start">Login</h1>
         <div className="flex flex-col items-center justify-center gap-2">
           <label className="relative">

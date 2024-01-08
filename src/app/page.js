@@ -4,10 +4,13 @@ import TableSkeletonComponent from "@/components/HomePage/TableSkeleton";
 import TableBodyComponent from "@/components/HomePage/TableBody";
 import { useEffect, useState } from "react";
 import GetAllFiles from "@/services/getAllFiles";
+import { useContextHook } from "@/context/FilesContext";
 
 export default function Home() {
-  const [files, setFiles] = useState([])
-  const [loadFiles, setLoadFiles] = useState(true)
+  const { 
+    files, setFiles 
+  } = useContextHook()
+  const [loadFiles, setLoadFiles] = useState(files.length == 0)
   
   useEffect( ()=>{
     
