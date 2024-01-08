@@ -1,4 +1,4 @@
-import endpoints from "@/pages/api/endpoints";
+import endpoints from "../utils/endpoints";
 
 export default async function GetAllFiles () {
     

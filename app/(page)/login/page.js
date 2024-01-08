@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from 'sonner';
 
-// setCookie('key', 'value', options);
-
 export default function Login() {
     const [password, setPassword] = useState("");
     const [inputType, setInputType] = useState("password");
@@ -15,7 +13,7 @@ export default function Login() {
     const handleSubmit = () => {
         if (password === USER_PASSWORD) {
           document.cookie = "userAuthenticated=true; path=/";
-    
+          
           router.push("/");
         } else {
           console.log("Contraseña incorrecta");

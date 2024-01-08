@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { toast } from 'sonner';
-import endpoints from "@/pages/api/endpoints";
-import { useContextHook } from "@/context/FilesContext";
+import endpoints from "@client/utils/endpoints";
+import { useContextHook } from "@client/hooks/FilesContext";
 
 export default function DeleteFileBtn({file}) {
     const [onDelete, setLoading] = useState(false)

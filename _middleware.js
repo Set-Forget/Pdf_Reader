@@ -1,6 +1,5 @@
 "use client";
 import { NextResponse } from "next/server";
-import { getCookie } from "cookies-next";
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request) {

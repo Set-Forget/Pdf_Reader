@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Header from '@/components/Header'
-import { AppContext } from '@/context/FilesContext'
+import Header from '@client/components/Header'
+import { AppContext } from '@/client/hooks/FilesContext';
 import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] })
@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
   title: 'PDF ChatBot',
   description: 'Chat with OpenAI',
+  favicon: './favicon.ico'
 }
 
 export default function RootLayout({ children }) {

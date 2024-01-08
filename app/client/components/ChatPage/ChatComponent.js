@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import HamburguerMenu from "./HamburgerMenu";
+import HamburguerMenu from "../HamburgerMenu";
 
 function ChatComponent() {
   const [messages, setMessages] = useState([]);
