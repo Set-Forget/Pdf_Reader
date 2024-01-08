@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import HamburguerMenu from "../HamburgerMenu";
+import HamburguerMenu from "../deprecated/HamburgerMenu";
 
 function ChatComponent() {
   const [messages, setMessages] = useState([]);
@@ -136,11 +136,10 @@ function ChatComponent() {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`p-2 my-1 text-sm font-medium rounded-md ${
-                message.sender === "user"
+              className={`p-2 my-1 text-sm font-medium rounded-md ${message.sender === "user"
                   ? "self-end bg-blue-100"
                   : "bg-gray-100 self-start"
-              }`}
+                }`}
             >
               {message.sender === "ia" ? (
                 <div dangerouslySetInnerHTML={{ __html: message.text }} />
@@ -197,7 +196,7 @@ function ChatComponent() {
         ) : (
           <div className="w-full h-full flex justify-center items-center p-4">
             <div className="flex flex-col items-center">
-              {availablePdfs.map((file) => ( 
+              {availablePdfs.map((file) => (
                 <button
                   key={file.id}
                   onClick={() => handlePdfClick(file)}

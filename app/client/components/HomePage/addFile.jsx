@@ -1,32 +1,8 @@
 import { useState } from "react";
 import { useContextHook } from "@client/hooks/FilesContext";
-import endpoints from "@client/utils/endpoints";
 import { toast } from 'sonner';
-
-function readFileAsBase64(file) {
-  return new Promise((resolve, reject) => {
-    if (!file) {
-      reject("No file provided");
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const base64 = reader.result.split(",")[1];
-      resolve({
-        name: file.name,
-        base64: base64,
-        type: file.type
-      });
-    };
-
-    reader.onerror = (error) => {
-      reject(error);
-    };
-
-    reader.readAsDataURL(file);
-  });
-}
+import UploadFileAppscript from "@/client/services/uploadFileAppscript";
+import UploadFileOpenai from "@/client/services/uploadFileOpenai";
 
 const AddFileBtn = () => {
   const [onLoad, setLoading] = useState(false)
@@ -38,30 +14,18 @@ const AddFileBtn = () => {
   const handleSubmit = async (file) => {
     if (!file) return;
     setLoading(true)
-
-    const fileProcesed = await readFileAsBase64(file)
-    const formData = new FormData();
-    formData.append("action", "upload");
-    formData.append("fileData", fileProcesed.base64);
-    formData.append("fileName", fileProcesed.name);
-    formData.append("mimeType", fileProcesed.type);
-
     try {
-      const url = endpoints.files.urlBase
-      const response = await fetch(url, {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-      const newFile = {
-        title: data.fileName,
-        id: data.fileId,
-        url: data.fileUrl,
-        type: fileProcesed.type
-      }
-      setFiles([newFile, ...files])
-      toast.success('Upload file successfully')
+      // const data = await UploadFileAppscript(file)
+      // const newFile = {
+      //   title: data.fileName,
+      //   id: data.fileId,
+      //   url: data.fileUrl,
+      //   type: fileProcesed.type
+      // }
+      // setFiles([newFile, ...files])
+    
+      const chatFile = await UploadFileOpenai(file)
+      // toast.success('Upload file successfully')
     } catch (error) {
       console.error('Error al subir el archivo:', error);
       toast.error('Error on uploading file')

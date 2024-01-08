@@ -1,7 +1,7 @@
 'use client'
 import { useState, useRef } from "react";
 import axios from "axios";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 import MessageModal from "./MessageModal";
 import FilesModal from "./FilesModal";
 
@@ -36,7 +36,7 @@ function HamburguerMenu() {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = async () => {
-          const base64 = reader.result.split(",")[1]; 
+          const base64 = reader.result.split(",")[1];
           const gsFormData = new FormData();
           gsFormData.append("action", "upload");
           gsFormData.append("fileData", base64);
@@ -50,7 +50,7 @@ function HamburguerMenu() {
 
           if (response.data.success) {
             setMessage("File uploaded successfully ");
-            setIsLoading(false); 
+            setIsLoading(false);
           } else {
             throw new Error(
               response.data.error || "Failed to upload to Google Drive"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MessageModal from "./MessageModal";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 
 function FilesModal({ isOpen, onClose }) {
   const [files, setFiles] = useState([]);

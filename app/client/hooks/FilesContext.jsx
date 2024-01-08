@@ -1,5 +1,6 @@
 'use client'
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { fetchAssistant } from '@client/services/getAssistant';
 
 const FileContext = createContext();
 
@@ -9,10 +10,16 @@ export function useContextHook() {
 
 export function AppContext({ children }) {
     const [files, setFiles] = useState([])
+    const [assistant, setAssistant] = useState({})
+
+    useEffect(() => {
+      fetchAssistant().then( a => setAssistant(a))
+    }, [])
     
     return (
       <FileContext.Provider value={{
-        files, setFiles
+        files, setFiles,
+        assistant
        }}>
         { children }
       </FileContext.Provider>
