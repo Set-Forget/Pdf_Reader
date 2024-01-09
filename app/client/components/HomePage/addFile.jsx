@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useContextHook } from "@client/hooks/FilesContext";
+import { useContextHook } from "@/client/context/FilesContext";
 import { toast } from 'sonner';
 import UploadFileAppscript from "@/client/services/uploadFileAppscript";
 import UploadFileOpenai from "@/client/services/uploadFileOpenai";
+import SaveFilesIds from "@/client/services/saveFilesOnSheet";
 
 const AddFileBtn = () => {
   const [onLoad, setLoading] = useState(false)
@@ -12,7 +13,6 @@ const AddFileBtn = () => {
   } = useContextHook()
 
   const handleSubmit = async (file) => {
-    console.log(file);
     if (!file) return;
     setLoading(true)
     try {
@@ -23,9 +23,9 @@ const AddFileBtn = () => {
         url: data.fileUrl,
         type: file.type
       }
-      
-      const chatFile = await UploadFileOpenai(file)
-      saveFilesIds(newFile.id, chatFile.id)
+
+      const assistantFile = await UploadFileOpenai(file)
+      await SaveFilesIds(newFile.id, assistantFile.fileId)
       setFiles([newFile, ...files])
     } catch (error) {
       console.error('Error al subir el archivo:', error);

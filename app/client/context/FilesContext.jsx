@@ -1,7 +1,8 @@
 'use client'
 import { createContext, useContext, useEffect, useState } from 'react';
 import { fetchAssistant } from '@client/services/getAssistant';
-import GetAssistantFiles from '../services/getAssistantFileList';
+import GetAssistantFiles from '@client/services/getAssistantFileList';
+import DeleteFileOpenai from '../services/deleteFileOpenai';
 
 const FileContext = createContext();
 

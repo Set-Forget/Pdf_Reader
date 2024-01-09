@@ -1,33 +1,31 @@
+'use client'
 import Link from "next/link";
 import DeleteFileBtn from "./deleteFile";
-import { MagicMotion } from "react-magic-motion";
-import { useContextHook } from "@/client/hooks/FilesContext";
+import { useContextHook } from "@/client/context/FilesContext";
 
 export default function TableBodyComponent() {
   const {
     files
   } = useContextHook()
 
-    return(
+  return (
     <tbody className="divide-y divide-gray-200">
-      <MagicMotion>
-      { files.length > 0 ?
-        files.map((file) => (
-          <TableRow key={file.id} file={file}/>
-        ))
-        : 
-        <tr className="text-gray-500">
-          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
-            No files to display.
-          </td>
-        </tr>
-      }
-      </MagicMotion>
-  </tbody>)
+        {files.length > 0 ?
+          files.map((file) => (
+            <TableRow key={file.id} file={file} />
+          ))
+          :
+          <tr className="text-gray-500">
+            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
+              No files to display.
+            </td>
+          </tr>
+        }
+    </tbody>)
 }
 
-function TableRow({file}) {
-  return(
+function TableRow({ file }) {
+  return (
     <tr>
       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-gray-900 w-1/3">
         {file.title}

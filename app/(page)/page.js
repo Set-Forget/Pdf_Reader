@@ -1,7 +1,7 @@
 "use client";
 import AddFileBtn from "@client/components/HomePage/addFile";
 import GetAllFiles from "@client/services/getAllFiles";
-import { useContextHook } from "@client/hooks/FilesContext";
+import { useContextHook } from "@/client/context/FilesContext";
 import { useEffect, useState } from "react";
 import TableComponent from "@/client/components/HomePage/Table";
 
@@ -33,7 +33,7 @@ export default function Home() {
           <AddFileBtn />
         </div>
       </div>
-      <TableComponent loadFiles={loadFiles}/>
+      <TableComponent loadFiles={loadFiles} />
     </section>
   );
 }
