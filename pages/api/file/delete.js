@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-export default async function handlerDelete(req, res) {
+export default async function handleDelete(req, res) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });

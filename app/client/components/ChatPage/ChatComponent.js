@@ -1,8 +1,16 @@
-import { useState, useRef, useEffect } from "react";
+'use client'
+import { useState, useEffect } from "react";
+import { useParams } from 'next/navigation'
 import axios from "axios";
-import HamburguerMenu from "../deprecated/HamburgerMenu";
+import { useContextHook } from "@/client/context/FilesContext";
+import endpoints from "@/client/utils/endpoints";
 
 function ChatComponent() {
+  const {
+
+  } = useContextHook()
+  const { id } = useParams();
+
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +34,7 @@ function ChatComponent() {
 
         // Enviar la pregunta al chatbot
         const response = await axios.post(
-          "https://11b7-2600-1f18-762e-6b00-f71e-4c67-c445-5932.ngrok-free.app/chat",
+          endpoints.chat.question,
           {
             question: inputToSend,
           }
@@ -68,7 +76,7 @@ function ChatComponent() {
           }
 
           if (file) {
-            const viewerUrl = `https://docs.google.com/viewer?srcid=${file.id}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
+            const viewerUrl = `https://docs.google.com/viewer?srcid=${id}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
             setFileInfo({ id: file.id, url: viewerUrl, page: pageNum });
             let modifiedMessage;
             if (pageNum) {
@@ -106,8 +114,8 @@ function ChatComponent() {
     }
   };
 
-  const handlePdfClick = (file) => {
-    const viewerUrl = `https://docs.google.com/viewer?srcid=${file.id}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
+  const handlePdfClick = () => {
+    const viewerUrl = `https://docs.google.com/viewer?srcid=${id}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
     setPdfUrl(viewerUrl);
     setIsIframeOpen(true);
   };

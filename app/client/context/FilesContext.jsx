@@ -2,7 +2,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { fetchAssistant } from '@client/services/getAssistant';
 import GetAssistantFiles from '@client/services/getAssistantFileList';
-import DeleteFileOpenai from '../services/deleteFileOpenai';
 
 const FileContext = createContext();
 
@@ -12,6 +11,8 @@ export function useContextHook() {
 
 export function AppContext({ children }) {
     const [files, setFiles] = useState([])
+    const [selectedFile, setSelectedFile] = useState({})
+    const [selectedFileId, setSelectedFileId] = useState("")
     const [assistant, setAssistant] = useState({})
     const [assistantFiles, setAssistantFiles] = useState({})
 
@@ -24,11 +25,16 @@ export function AppContext({ children }) {
         fileList => setAssistantFiles(fileList)
       )
     }, [files])
+
+    useEffect(()=>{
+      setSelectedFile(files.find(f => f.id == selectedFileId))
+    }, [selectedFileId])
     
     return (
       <FileContext.Provider value={{
-        files, setFiles,
-        assistant, assistantFiles
+        files, setFiles, selectedFile,
+        assistant, assistantFiles,
+        selectedFileId, setSelectedFileId
        }}>
         { children }
       </FileContext.Provider>
