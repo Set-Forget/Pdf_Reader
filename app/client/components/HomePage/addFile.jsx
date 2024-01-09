@@ -12,20 +12,21 @@ const AddFileBtn = () => {
   } = useContextHook()
 
   const handleSubmit = async (file) => {
+    console.log(file);
     if (!file) return;
     setLoading(true)
     try {
-      // const data = await UploadFileAppscript(file)
-      // const newFile = {
-      //   title: data.fileName,
-      //   id: data.fileId,
-      //   url: data.fileUrl,
-      //   type: fileProcesed.type
-      // }
-      // setFiles([newFile, ...files])
-    
+      const data = await UploadFileAppscript(file)
+      const newFile = {
+        title: data.fileName,
+        id: data.fileId,
+        url: data.fileUrl,
+        type: file.type
+      }
+      
       const chatFile = await UploadFileOpenai(file)
-      // toast.success('Upload file successfully')
+      saveFilesIds(newFile.id, chatFile.id)
+      setFiles([newFile, ...files])
     } catch (error) {
       console.error('Error al subir el archivo:', error);
       toast.error('Error on uploading file')

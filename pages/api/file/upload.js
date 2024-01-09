@@ -8,35 +8,38 @@ export const config = {
     },
 };
 
-export default async function handler(req, res) {
-    const data = await new Promise(function(resolve, reject) {
-        const form = formidable({})
-    
-        form.parse(req, function(err, fields, files) {
-          if (err) return reject(err)
-          resolve({ fields, files })
+export default async function handlerUpload(req, res) {
+    try {
+        const data = await new Promise(function(resolve, reject) {
+            const form = formidable({})
+
+            form.parse(req, function(err, fields, files) {
+              if (err) return reject(err)
+              resolve({ fields, files })
+            });
         });
-    });
 
-    const file = data.files.file[0]
-    if (!file) {
-        return res.status(400).json({ error: "No file uploaded." })
+        const file = data.files.file[0]
+        if (!file) {
+            return res.status(400).json({ error: "No file uploaded." })
+        }
+
+        const savedFilePath = `app/server/files/${file.originalFilename}`;
+        fs.renameSync(file.filepath, savedFilePath);
+
+        const openai = new OpenAI({
+            apiKey: process.env.OPENAI_API_KEY,
+        });
+
+        const openaiFile = await openai.files.create({
+            file: fs.createReadStream(savedFilePath),
+            purpose: "assistants",
+        });
+        
+        fs.unlinkSync(savedFilePath);
+        res.status(200).json({ message: 'File uploaded successfully', fileId: openaiFile.id })
+    } catch (error) {
+        console.error("Error uploading file to OpenAI:", error);
+        res.status(500).json({ error: "Error uploading file." });
     }
-    
-    if (!file.path) {
-        return res.status(400).json({ error: "File path is undefined." })
-    }
-    
-    const filePath = file.filepath
-    const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-    });
-
-    const openaiFile = await openai.files.create({
-        file: fs.createReadStream(filePath),
-        purpose: "assistants",
-    });
-
-    console.log(openaiFile);
-    res.status(200).json({ message: 'File uploaded successfully', fileId: openaiFile.id })
 }
