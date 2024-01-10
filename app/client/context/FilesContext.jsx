@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { fetchAssistant } from '@client/services/getAssistant';
 import GetAssistantFiles from '@client/services/getAssistantFileList';
 import GetAllFiles from "@client/services/getAllFiles";
-import RenewAsistantFile from '../services/renewAsistantFile';
 
 const FileContext = createContext();
 
@@ -42,7 +41,7 @@ export function AppContext({ children }) {
 
     useEffect(()=>{
       setSelectedFile(files.find(f => f.id == selectedFileId))
-      setAssistant({id:assistantFiles[selectedFileId]})
+      setAssistant({id:assistantFiles[selectedFileId]?.assistantId})
     }, [selectedFileId, files])
     
     return (

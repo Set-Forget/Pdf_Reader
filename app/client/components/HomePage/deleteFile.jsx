@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import endpoints from "@client/utils/endpoints";
 import { useContextHook } from "@/client/context/FilesContext";
 import DeleteChatOpenai from "@/client/services/deleteChatOpenai";
+import DeleteFileOpenai from "@/client/services/deleteFileOpenai";
 
 export default function DeleteFileBtn({ file }) {
     const [onDelete, setLoading] = useState(false)
@@ -36,8 +37,10 @@ export default function DeleteFileBtn({ file }) {
                 method: 'POST',
                 body: formData,
             });
-            const assistantFileId = assistantFiles[file.id]
-            DeleteChatOpenai(assistantFileId)
+            const assistantFileId = assistantFiles[file.id].assistantFileId
+            const assistantId = assistantFiles[file.id].assistantId
+            DeleteFileOpenai(assistantFileId)
+            DeleteChatOpenai(assistantId)
             deleteFileRow()
         } catch (error) {
             console.error("Error al intentar borrar el archivo")

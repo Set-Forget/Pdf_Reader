@@ -24,7 +24,6 @@ function ChatPage() {
 
       try {
         // Enviar la pregunta al chatbot
-        console.log(assistant.id)
         const data = await AskToChat(inputToSend, assistant.id)
 
         const infoRegex = /Information: ([^,]+),/;

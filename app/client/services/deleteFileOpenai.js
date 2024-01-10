@@ -4,7 +4,7 @@ export default async function DeleteFileOpenai(fileId) {
     try {  
         const urlChat = endpoints.chat.deleteFile
         const response = await fetch(urlChat, {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },

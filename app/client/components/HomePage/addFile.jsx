@@ -30,7 +30,7 @@ const AddFileBtn = () => {
       const assistantName = `PDF_READER_${newFile.id}`
       const newAssistant = await fetchCreateAssistant(assistantName)
       await SaveFilesIds(newFile.id, assistantFile.fileId, newAssistant.id)
-      await RenewAsistantFile(assistantFile.fileId,newAssistant.id)
+      await RenewAsistantFile(assistantFile.fileId, newAssistant.id)
       setFiles([newFile, ...files])
     } catch (error) {
       console.error('Error al subir el archivo:', error);
