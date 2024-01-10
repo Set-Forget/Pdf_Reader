@@ -1,19 +1,24 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useContextHook } from "@/client/context/FilesContext";
 
 import FileView from "@/client/components/ChatPage/FileViewer";
 import AskToChat from "@/client/services/askChat";
+import Spinner from "@/client/components/Spinner";
 
 function ChatPage() {
   const {
-    assistant
+    assistant, isLoadingAssistant, setIsLoadingAssistant
   } = useContextHook()
   
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [pageNum, setPageNum] = useState(1);
+
+  useEffect(()=>{
+    setIsLoadingAssistant(!assistant?.id)
+  }, [assistant])
 
   const handleSend = async () => {
     if (input.trim()) {
@@ -61,6 +66,7 @@ function ChatPage() {
       {/* Contenedor del chat */}
       <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col p-4">
         {/* Mensajes del chat */}
+        { isLoadingAssistant ? <Spinner/> :
         <div className="overflow-auto mb-4 flex-grow" onClick={handlePdfClick}>
           {messages.map((message, index) => (
             <div
@@ -79,7 +85,7 @@ function ChatPage() {
           ))}
           {isLoading && <PointsLoader />}
         </div>
-
+        }
         {/* Área fija de entrada de texto y botones */}
         <div className="mt-auto flex items-center space-x-2 px-2">
           <input

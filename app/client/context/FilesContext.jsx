@@ -17,6 +17,7 @@ export function AppContext({ children }) {
     const [assistant, setAssistant] = useState({})
     const [assistantFiles, setAssistantFiles] = useState({})
     const [loadFiles, setLoadFiles] = useState(files.length == 0)
+    const [isLoadingAssistant, setIsLoadingAssistant] = useState(false)
 
     useEffect(() => {
       GetAllFiles().then(list => {
@@ -41,14 +42,14 @@ export function AppContext({ children }) {
 
     useEffect(()=>{
       setSelectedFile(files.find(f => f.id == selectedFileId))
-      setAssistant({id:assistantFiles[selectedFileId]?.assistantId})
+      if (assistantFiles[selectedFileId]?.assistantId) setAssistant({id:assistantFiles[selectedFileId]?.assistantId})
     }, [selectedFileId, files])
     
     return (
       <FileContext.Provider value={{
         files, setFiles, selectedFile,
         loadFiles, setLoadFiles,
-        assistant, assistantFiles,
+        assistant, assistantFiles, isLoadingAssistant, setIsLoadingAssistant, 
         selectedFileId, setSelectedFileId
        }}>
         { children }
