@@ -4,7 +4,7 @@ export default async function DeleteChatOpenai(assistantId) {
     try {  
         const urlChat = endpoints.chat.delete
         const response = await fetch(urlChat, {
-            method: 'POST',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },

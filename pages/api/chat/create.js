@@ -10,7 +10,7 @@ export default async function handlerAssistantCreate(req, res) {
             res.status(500).json({ error: 'Error del servidor' });
         }
     } else {
-        res.setHeader('Allow', ['GET']);
+        res.setHeader('Allow', ['POST']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
