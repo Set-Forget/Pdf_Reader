@@ -7,7 +7,6 @@ import AskToChat from "@/client/services/askChat";
 
 function ChatPage() {
   const {
-    selectedFileId,
     assistant
   } = useContextHook()
   
@@ -25,6 +24,7 @@ function ChatPage() {
 
       try {
         // Enviar la pregunta al chatbot
+        console.log(assistant.id)
         const data = await AskToChat(inputToSend, assistant.id)
 
         const infoRegex = /Information: ([^,]+),/;
@@ -54,8 +54,6 @@ function ChatPage() {
   };
 
   const handlePdfClick = () => {
-    // const viewerUrl = `https://docs.google.com/viewer?srcid=${selectedFileId}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
-    // setPdfUrl(viewerUrl);
     setIsIframeOpen(true);
   };
 

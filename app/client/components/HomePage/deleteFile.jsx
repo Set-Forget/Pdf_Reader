@@ -3,7 +3,7 @@ import { useState } from "react"
 import { toast } from 'sonner';
 import endpoints from "@client/utils/endpoints";
 import { useContextHook } from "@/client/context/FilesContext";
-import DeleteFileOpenai from "@/client/services/deleteFileOpenai";
+import DeleteChatOpenai from "@/client/services/deleteChatOpenai";
 
 export default function DeleteFileBtn({ file }) {
     const [onDelete, setLoading] = useState(false)
@@ -37,7 +37,7 @@ export default function DeleteFileBtn({ file }) {
                 body: formData,
             });
             const assistantFileId = assistantFiles[file.id]
-            DeleteFileOpenai(assistantFileId)
+            DeleteChatOpenai(assistantFileId)
             deleteFileRow()
         } catch (error) {
             console.error("Error al intentar borrar el archivo")

@@ -1,10 +1,11 @@
 import endpoints from "@/client/utils/endpoints";
 
-export default async function SaveFilesIds(fileId, assistantFileId ) {
+export default async function SaveFilesIds(fileId, assistantFileId, assistantId ) {
     const formData = new FormData();
     formData.append("action", "upload");
     formData.append("fileId", fileId);
     formData.append("assistantFileId", assistantFileId);
+    formData.append("assistantId", assistantId);
 
     try {
         const urlAppscript = endpoints.chat.files

@@ -11,11 +11,11 @@ At the end of each answer you must provide the name of the file in which you fou
 Always provide a single page and not a range of pages.`
 const chatModel = "gpt-4-1106-preview"
 
-export async function createAssistant() {
+export async function createAssistant(name = "PDF_READER" ) {
 
   const assistant = await openai.beta.assistants.create({
     instructions: instructions,
-    name: `PDF_READER`,
+    name: name,
     tools: [{ type: "retrieval" }],
     model: chatModel,
   });
@@ -55,4 +55,9 @@ async function uploadAssistantFile(assistantId, fileId) {
     }
   );
   return myAssistantFile
+}
+
+export async function deleteAssistant(assistantId) {
+  const response = await openai.beta.assistants.del(assistantId);
+  return response
 }

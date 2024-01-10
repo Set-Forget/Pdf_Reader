@@ -14,7 +14,7 @@ export default async function GetAssistantFiles () {
         const list = {}
         for (let i = 0; i < data.length; i++) {
             const row = data[i];
-            list[row.fileId] = row.assistantFileId
+            list[row.fileId] = row.assistantId
         }
         return list
     } catch (error) {

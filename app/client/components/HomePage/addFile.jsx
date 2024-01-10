@@ -4,6 +4,8 @@ import { toast } from 'sonner';
 import UploadFileAppscript from "@/client/services/uploadFileAppscript";
 import UploadFileOpenai from "@/client/services/uploadFileOpenai";
 import SaveFilesIds from "@/client/services/saveFilesOnSheet";
+import { fetchCreateAssistant } from "@/client/services/createAssistant";
+import RenewAsistantFile from "@/client/services/renewAsistantFile";
 
 const AddFileBtn = () => {
   const [onLoad, setLoading] = useState(false)
@@ -25,7 +27,10 @@ const AddFileBtn = () => {
       }
 
       const assistantFile = await UploadFileOpenai(file)
-      await SaveFilesIds(newFile.id, assistantFile.fileId)
+      const assistantName = `PDF_READER_${newFile.id}`
+      const newAssistant = await fetchCreateAssistant(assistantName)
+      await SaveFilesIds(newFile.id, assistantFile.fileId, newAssistant.id)
+      await RenewAsistantFile(assistantFile.fileId,newAssistant.id)
       setFiles([newFile, ...files])
     } catch (error) {
       console.error('Error al subir el archivo:', error);

@@ -34,14 +34,16 @@ export function AppContext({ children }) {
 
     useEffect(()=>{
       GetAssistantFiles().then(
-        fileList => setAssistantFiles(fileList)
+        fileList => {
+          setAssistantFiles(fileList)
+        }
       )
     }, [files])
 
     useEffect(()=>{
       setSelectedFile(files.find(f => f.id == selectedFileId))
-      if ( selectedFileId && assistant?.id && assistantFiles.hasOwnProperty(selectedFileId) )  RenewAsistantFile(assistantFiles[selectedFileId], assistant.id)
-    }, [selectedFileId, files, assistantFiles])
+      setAssistant({id:assistantFiles[selectedFileId]})
+    }, [selectedFileId, files])
     
     return (
       <FileContext.Provider value={{
