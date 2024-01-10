@@ -33,13 +33,9 @@ export async function listAssistant() {
 }
 
 export async function getAssistant() {
-    // console.log("Entrando a getAssistant");
     const assistants = await listAssistant()
-    // console.log("assistants list: ", assistants);
     let assistant = assistants?.find( a => a.name === 'PDF_READER')
-    // console.log("assistant: ", assistant);
     if ( assistants.length === 0 || !assistant ) assistant = await createAssistant()
-    // console.log("assistant 2: ", assistant);
     return assistant
 }
 

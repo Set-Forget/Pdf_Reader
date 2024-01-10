@@ -8,7 +8,7 @@ import AskToChat from "@/client/services/askChat";
 function ChatPage() {
   const {
     selectedFileId,
-    assistant, assistantFiles
+    assistant
   } = useContextHook()
   
   const [messages, setMessages] = useState([]);
