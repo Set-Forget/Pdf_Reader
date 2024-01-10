@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
 import { useContextHook } from "@/client/context/FilesContext";
-import endpoints from "@/client/utils/endpoints";
+
 import FileView from "@/client/components/ChatPage/FileViewer";
 import AskToChat from "@/client/services/askChat";
 
@@ -26,7 +26,7 @@ function ChatPage() {
 
       try {
         // Enviar la pregunta al chatbot
-        const response = await AskToChat(inputToSend)
+        const response = await AskToChat(inputToSend, assistant.id)
 
         const data = response?.data;
         console.log(data.message);

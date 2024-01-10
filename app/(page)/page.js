@@ -1,27 +1,8 @@
 "use client";
 import AddFileBtn from "@client/components/HomePage/addFile";
-import GetAllFiles from "@client/services/getAllFiles";
-import { useContextHook } from "@/client/context/FilesContext";
-import { useEffect, useState } from "react";
 import TableComponent from "@/client/components/HomePage/Table";
 
 export default function Home() {
-  const {
-    files, setFiles
-  } = useContextHook()
-  const [loadFiles, setLoadFiles] = useState(files.length == 0)
-
-  useEffect(() => {
-
-    GetAllFiles().then(list => {
-      const excels = list.files.excels.map(f => { return { title: f.name, id: f.id, url: f.url, type: "Excel" } })
-      const pdfs = list.files.pdfs.map(f => { return { title: f.name, id: f.id, url: f.url, type: "PDF" } })
-      const fileList = [...pdfs, ...excels]
-      setFiles(fileList)
-      setLoadFiles(false)
-    })
-  }, [])
-
   return (
     <section className="flex flex-col gap-4">
       <div className="flex justify-between">
@@ -33,7 +14,7 @@ export default function Home() {
           <AddFileBtn />
         </div>
       </div>
-      <TableComponent loadFiles={loadFiles} />
+      <TableComponent/>
     </section>
   );
 }

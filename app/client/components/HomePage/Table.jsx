@@ -1,7 +1,12 @@
 import TableSkeletonComponent from "@client/components/HomePage/TableSkeleton";
 import TableBodyComponent from "@client/components/HomePage/TableBody";
+import { useContextHook } from "@/client/context/FilesContext";
 
-export default function TableComponent({loadFiles}) {
+export default function TableComponent() {
+  const {
+    loadFiles
+  } = useContextHook()
+
     return(
     <table className="min-w-full divide-y divide-gray-300 bg-gray-50 rounded-lg">
         <thead>

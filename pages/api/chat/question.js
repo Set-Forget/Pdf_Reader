@@ -1,16 +1,13 @@
-import { useContextHook } from "@/client/context/FilesContext";
 import OpenAI from "openai";
 
 export default async function handleChatQuestion(req, res) {
-    const {
-        assistant
-    } = useContextHook()
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });
 
     try {
         const userQuestion = req.body.question;
+        const assistantId = req.body.assistantId;
         const thread = await openai.beta.threads.create();
         await openai.beta.threads.messages.create(thread.id, {
             role: "user",
@@ -18,7 +15,7 @@ export default async function handleChatQuestion(req, res) {
         });
 
         const run = await openai.beta.threads.runs.create(thread.id, {
-            assistant_id: assistant.id,
+            assistant_id: assistantId,
         });
 
         // Esperar hasta que la respuesta esté completa
