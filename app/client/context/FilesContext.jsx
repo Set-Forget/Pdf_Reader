@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { fetchAssistant } from '@client/services/getAssistant';
 import GetAssistantFiles from '@client/services/getAssistantFileList';
 import GetAllFiles from "@client/services/getAllFiles";
-import RenewAsistantFile from '../services/renewAsistantFile';
+import RenewAsistantFile from '@client/services/renewAsistantFile';
 
 const FileContext = createContext();
 
@@ -18,6 +18,7 @@ export function AppContext({ children }) {
     const [assistant, setAssistant] = useState({})
     const [assistantFiles, setAssistantFiles] = useState({})
     const [loadFiles, setLoadFiles] = useState(files.length == 0)
+    const [loadAssistantFile, setLoadingAssistantFile] = useState(true)
 
     useEffect(() => {
       GetAllFiles().then(list => {
@@ -40,7 +41,12 @@ export function AppContext({ children }) {
 
     useEffect(()=>{
       setSelectedFile(files.find(f => f.id == selectedFileId))
-      if ( selectedFileId && assistant?.id && assistantFiles.hasOwnProperty(selectedFileId) )  RenewAsistantFile(assistantFiles[selectedFileId], assistant.id)
+      if ( selectedFileId && assistant?.id && assistantFiles.hasOwnProperty(selectedFileId) )  {
+        setLoadingAssistantFile(true)
+        RenewAsistantFile(assistantFiles[selectedFileId], assistant.id).then( res => {
+          setLoadingAssistantFile(false)
+        })
+      }
     }, [selectedFileId, files, assistantFiles])
     
     return (
@@ -48,6 +54,7 @@ export function AppContext({ children }) {
         files, setFiles, selectedFile,
         loadFiles, setLoadFiles,
         assistant, assistantFiles,
+        loadAssistantFile, setLoadingAssistantFile,
         selectedFileId, setSelectedFileId
        }}>
         { children }

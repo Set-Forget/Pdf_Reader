@@ -4,10 +4,11 @@ import { useContextHook } from "@/client/context/FilesContext";
 
 import FileView from "@/client/components/ChatPage/FileViewer";
 import AskToChat from "@/client/services/askChat";
+import Spinner from "@/client/components/Spinner";
 
 function ChatPage() {
   const {
-    selectedFileId,
+    loadAssistantFile,
     assistant
   } = useContextHook()
   
@@ -64,6 +65,7 @@ function ChatPage() {
       {/* Contenedor del chat */}
       <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col p-4">
         {/* Mensajes del chat */}
+        { loadAssistantFile ? <Spinner /> : 
         <div className="overflow-auto mb-4 flex-grow" onClick={handlePdfClick}>
           {messages.map((message, index) => (
             <div
@@ -82,7 +84,7 @@ function ChatPage() {
           ))}
           {isLoading && <PointsLoader />}
         </div>
-
+        }
         {/* Área fija de entrada de texto y botones */}
         <div className="mt-auto flex items-center space-x-2 px-2">
           <input
@@ -111,7 +113,7 @@ export default ChatPage;
 
 function PointsLoader() {
   return(
-    <div className="flex justify-start my-2">
+    <div className="flex justify-start m-4">
       <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
       <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
       <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
