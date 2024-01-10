@@ -10,7 +10,6 @@ function ChatPage() {
     selectedFileId,
     assistant, assistantFiles
   } = useContextHook()
-  const id = selectedFileId
   
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -26,15 +25,11 @@ function ChatPage() {
 
       try {
         // Enviar la pregunta al chatbot
-        const response = await AskToChat(inputToSend, assistant.id)
-
-        const data = response?.data;
-        console.log(data.message);
+        const data = await AskToChat(inputToSend, assistant.id)
 
         const infoRegex = /Information: ([^,]+),/;
 
         const infoMatch = infoRegex.exec(data.message);
-        console.log(infoMatch);
         if (infoMatch) {
           const fileInfo = infoMatch[1].split(".");
           console.log(fileInfo + " fileInfo");
@@ -48,6 +43,10 @@ function ChatPage() {
         }
       } catch (error) {
         console.error("There was an error!", error);
+        setMessages((messages) => [
+          ...messages,
+          { text: "IA: an error occurred.", sender: "ia" },
+        ]);
       } finally {
         setIsLoading(false);
       }
@@ -55,7 +54,7 @@ function ChatPage() {
   };
 
   const handlePdfClick = () => {
-    const viewerUrl = `https://docs.google.com/viewer?srcid=${id}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
+    const viewerUrl = `https://docs.google.com/viewer?srcid=${selectedFileId}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
     setPdfUrl(viewerUrl);
     setIsIframeOpen(true);
   };
@@ -81,13 +80,7 @@ function ChatPage() {
               )}
             </div>
           ))}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
-              <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
-              <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
-            </div>
-          )}
+          {isLoading && <PointsLoader />}
         </div>
 
         {/* Área fija de entrada de texto y botones */}
@@ -97,7 +90,7 @@ function ChatPage() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSend()}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder="Type a message..."
           />
           <button
@@ -115,3 +108,13 @@ function ChatPage() {
 }
 
 export default ChatPage;
+
+function PointsLoader() {
+  return(
+    <div className="flex justify-start my-2">
+      <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
+      <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
+      <div className="w-3 h-3 bg-gray-500 rounded-full animate-pulse"></div>
+    </div>
+  )
+}
