@@ -54,8 +54,8 @@ function ChatPage() {
   };
 
   const handlePdfClick = () => {
-    const viewerUrl = `https://docs.google.com/viewer?srcid=${selectedFileId}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
-    setPdfUrl(viewerUrl);
+    // const viewerUrl = `https://docs.google.com/viewer?srcid=${selectedFileId}&pid=explorer&efh=false&a=v&chrome=false&embedded=true&usp=sharing`;
+    // setPdfUrl(viewerUrl);
     setIsIframeOpen(true);
   };
 
