@@ -3,7 +3,7 @@
     "paths": {
       "@/*": ["./app/*"],
       "@client/*": ["./app/client/*"],
-      "@api/*": ["pages/api/*"],
+      "@api/*": ["./pages/api/*"],
     }
   }
 }
