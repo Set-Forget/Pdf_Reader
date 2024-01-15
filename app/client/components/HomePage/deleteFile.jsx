@@ -32,20 +32,34 @@ export default function DeleteFileBtn({ file }) {
                 method: 'POST',
                 body: formData,
             });
+        } catch (error) {
+            console.error(error);
+        }
+        try {
             const sheetUrl = endpoints.chat.files
             fetch(sheetUrl, {
                 method: 'POST',
                 body: formData,
             });
-            const assistantFileId = assistantFiles[file.id].assistantFileId
-            const assistantId = assistantFiles[file.id].assistantId
-            DeleteFileOpenai(assistantFileId)
-            DeleteChatOpenai(assistantId)
-            deleteFileRow()
         } catch (error) {
+            console.error(error);
+        }
+        try {
+            const assistantFileId = assistantFiles[file.id].assistantFileId
+            DeleteFileOpenai(assistantFileId)
+        } catch (error) {
+            console.error(error);
+        }
+        try {
+            const assistantId = assistantFiles[file.id].assistantId
+            DeleteChatOpenai(assistantId)
+        } catch (error) {
+            console.error(error);
             console.error("Error al intentar borrar el archivo")
             toast.error('Error on deleting file')
-        } finally {
+        }
+        finally {
+            deleteFileRow()
             setLoading(false)
         }
     }
