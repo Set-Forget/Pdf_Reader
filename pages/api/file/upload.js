@@ -1,7 +1,6 @@
 import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
-import os from 'os';
 import { OpenAI } from 'openai';
 
 export const config = {
@@ -26,7 +25,7 @@ export default async function handlerUpload(req, res) {
             return res.status(400).json({ error: "No file uploaded." })
         }
 
-        const tempDir = os.tmpdir();
+        const tempDir = "/temp";
         const savedFilePath = path.join(tempDir, file.originalFilename);
         // const savedFilePath = `/app/server/files/${file.originalFilename}`;
         fs.renameSync(file.filepath, savedFilePath);
