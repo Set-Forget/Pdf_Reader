@@ -34,6 +34,8 @@ export default function DeleteFileBtn({ file }) {
             });
         } catch (error) {
             console.error(error);
+            console.error("Error al intentar borrar el archivo")
+            toast.error('Error on deleting file')
         }
         try {
             const sheetUrl = endpoints.chat.files
@@ -55,8 +57,6 @@ export default function DeleteFileBtn({ file }) {
             DeleteChatOpenai(assistantId)
         } catch (error) {
             console.error(error);
-            console.error("Error al intentar borrar el archivo")
-            toast.error('Error on deleting file')
         }
         finally {
             deleteFileRow()
