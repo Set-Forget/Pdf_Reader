@@ -1,6 +1,5 @@
 import formidable from 'formidable';
 import fs from 'fs';
-import path from 'path';
 import { OpenAI } from 'openai';
 
 export const config = {
@@ -25,24 +24,22 @@ export default async function handlerUpload(req, res) {
             return res.status(400).json({ error: "No file uploaded." })
         }
 
-        const tempDir = "/tmp";
-        const savedFilePath = path.join(tempDir, file.originalFilename);
-        // const savedFilePath = `/app/server/files/${file.originalFilename}`;
-        // fs.renameSync(file.filepath, savedFilePath);
+        const savedFilePath = file.filepath
+        console.log("temp filepath: ", savedFilePath);
 
         const openai = new OpenAI({
             apiKey: process.env.OPENAI_API_KEY,
         });
 
         const openaiFile = await openai.files.create({
-            file: fs.createReadStream(file.filepath),
+            file: fs.createReadStream(savedFilePath),
             purpose: "assistants",
         });
         
-        // fs.unlinkSync(savedFilePath);
+        fs.unlinkSync(savedFilePath);
         res.status(200).json({ message: 'File uploaded successfully', fileId: openaiFile.id })
     } catch (error) {
         console.error("Error uploading file to OpenAI:", error);
-        res.status(500).json({ error: "Error uploading file." });
+        res.status(500).json({ error: "Error uploading file to OpenAI." });
     }
 }
