@@ -6,6 +6,7 @@ import UploadFileOpenai from "@/client/services/uploadFileOpenai";
 import SaveFilesIds from "@/client/services/saveFilesOnSheet";
 import { fetchCreateAssistant } from "@/client/services/createAssistant";
 import RenewAsistantFile from "@/client/services/renewAsistantFile";
+import endpoints from "@/client/utils/endpoints";
 
 const AddFileBtn = () => {
   const [onLoad, setLoading] = useState(false)
@@ -35,6 +36,21 @@ const AddFileBtn = () => {
     } catch (error) {
       console.error('Error al subir el archivo:', error);
       toast.error('Error on uploading file')
+      
+      try {
+        const formData = new FormData();
+        formData.append("action", "delete");
+        formData.append("fileName", newFile.title);
+        formData.append("fileId", newFile.id);
+        const driveUrl = endpoints.files.urlBase
+        fetch(driveUrl, {
+            method: 'POST',
+            body: formData,
+        });
+      } catch (error) {
+        console.error("Falla al borrar el borrar el archivo subido con error: ",error);
+      }
+
     } finally {
       setLoading(false)
     }
