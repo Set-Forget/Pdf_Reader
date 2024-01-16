@@ -1,4 +1,4 @@
-import endpoints from "../utils/endpoints";
+import endpoints from "@client/utils/endpoints";
 
 export default async function UploadFileOpenai(file) {
     const formData = new FormData();
