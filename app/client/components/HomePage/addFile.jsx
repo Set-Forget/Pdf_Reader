@@ -26,30 +26,34 @@ const AddFileBtn = () => {
       newFile.url = data.fileUrl,
       newFile.type = file.type
 
-      const assistantFile = await UploadFileOpenai(file)
       const assistantName = `PDF_READER_${newFile.id}`
       const newAssistant = await fetchCreateAssistant(assistantName)
-      await SaveFilesIds(newFile.id, assistantFile.fileId, newAssistant.id)
-      await RenewAsistantFile(assistantFile.fileId, newAssistant.id)
-      setFiles([newFile, ...files])
+      const assistantFile = await UploadFileOpenai(file)
+
+      if (newAssistant && assistantFile) {
+        SaveFilesIds(newFile.id, assistantFile?.fileId, newAssistant?.id)
+        RenewAsistantFile(assistantFile?.fileId, newAssistant?.id)
+        setFiles([newFile, ...files])
+      } else {
+        try {
+          const formData = new FormData();
+          formData.append("action", "delete");
+          formData.append("fileName", newFile.title);
+          formData.append("fileId", newFile.id);
+          const driveUrl = endpoints.files.urlBase
+          fetch(driveUrl, {
+              method: 'POST',
+              body: formData,
+          })
+        } catch (error) {
+          console.error("Falla al borrar el borrar el archivo subido con error: ",error);
+        }
+        throw new Error("Fail on upload file to openai")
+      }
+
     } catch (error) {
       console.error('Error al subir el archivo:', error);
       toast.error('Error on uploading file')
-      
-      try {
-        const formData = new FormData();
-        formData.append("action", "delete");
-        formData.append("fileName", newFile.title);
-        formData.append("fileId", newFile.id);
-        const driveUrl = endpoints.files.urlBase
-        fetch(driveUrl, {
-            method: 'POST',
-            body: formData,
-        });
-      } catch (error) {
-        console.error("Falla al borrar el borrar el archivo subido con error: ",error);
-      }
-
     } finally {
       setLoading(false)
     }
