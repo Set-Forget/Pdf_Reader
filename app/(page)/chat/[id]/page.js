@@ -41,7 +41,6 @@ function ChatPage() {
 
       try {
         const ok = await dataExists()
-        console.log("ok: ", ok);
         if ( !ok.success ) throw new Error(ok.message)
         // Enviar la pregunta al chatbot
         const startChat = await AskToChat(inputToSend, assistant.id)
