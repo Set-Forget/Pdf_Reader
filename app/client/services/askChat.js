@@ -20,6 +20,6 @@ export default async function AskToChat(question, assistantId) {
         return await response.json()
     } catch (error) {
        console.error('Error en la respuesta del chat: ', error);
+       throw new Error("Fail to ask. " + error)
     }
-    return null
 }

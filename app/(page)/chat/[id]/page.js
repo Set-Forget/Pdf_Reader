@@ -21,6 +21,17 @@ function ChatPage() {
     setIsLoadingAssistant(!assistant?.id)
   }, [assistant])
 
+  const dataExists = async () => {
+    const resp = await fetch("/api/chat/retrieveAssistant/", {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({assistantId: assistant.id}),
+  })
+    return await resp.json()
+  }
+
   const handleSend = async () => {
     if (input.trim()) {
       setMessages([...messages, { text: "User: " + input, sender: "user" }]);
@@ -29,6 +40,9 @@ function ChatPage() {
       setInput("");
 
       try {
+        const ok = await dataExists()
+        console.log("ok: ", ok);
+        if ( !ok.success ) throw new Error(ok.message)
         // Enviar la pregunta al chatbot
         const startChat = await AskToChat(inputToSend, assistant.id)
         let chatResponseStatus = "incolmplete"
@@ -37,7 +51,7 @@ function ChatPage() {
           chat = await getChatResponse(startChat.threadId, startChat.runId)
           console.log(chat);
           chatResponseStatus = chat?.status
-          await new Promise(resolve => setTimeout(resolve, 3500));
+          if (chatResponseStatus != "completed") await new Promise(resolve => setTimeout(resolve, 3500));
         } while (chatResponseStatus != "completed");
         
         setMessages((messages) => [
@@ -48,7 +62,7 @@ function ChatPage() {
         console.error("There was an error!", error);
         setMessages((messages) => [
           ...messages,
-          { text: "IA: an error occurred.", sender: "ia" },
+          { text: "IA: an error occurred. " + error.message, sender: "ia" },
         ]);
       } finally {
         setIsLoading(false);

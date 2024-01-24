@@ -20,6 +20,6 @@ export default async function handleChatQuestion(req, res) {
 
         res.json({ threadId:thread.id, runId:run.id });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        res.status(error.status).json({ message: error.error.message, error });
     }
 }

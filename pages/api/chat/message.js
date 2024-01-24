@@ -15,10 +15,10 @@ export default async function getChatUpdate(req, res) {
         .filter(message => message.run_id === runId && message.role === "assistant")
         .pop();
         
-        const msgValue = lastMessage.content[0].text.value
+        const msgValue = lastMessage?.content[0]?.text?.value
         
         res.json({ message: lastMessage ? msgValue : "No response from assistant.", status: runStatus.status});
     } catch (error) {
-        res.status(500).json({ message: "Server error", error });
+        res.status(error.status).json({ message: error.error.message, error });
     }
 }

@@ -20,6 +20,7 @@ export default async function getChatResponse(threadId, runId) {
         }
         return await response.json();
     } catch (error) {
-        console.error('Error al obtener el asistente:', error);
+        console.error('Error al obtener respuesta del asistente:', error);
+        throw new Error("fails to capture chat response. " + error)
     }
 }
