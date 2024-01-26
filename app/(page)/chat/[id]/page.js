@@ -10,16 +10,12 @@ import Dialogue from "@/client/components/ChatPage/dialogeComponent";
 
 function ChatPage() {
   const {
-    assistant, isLoadingAssistant, setIsLoadingAssistant
+    assistant, isLoadingAssistant
   } = useContextHook()
   
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(()=>{
-    setIsLoadingAssistant(!assistant?.id)
-  }, [assistant])
 
   const dataExists = async () => {
     const resp = await fetch("/api/chat/retrieveAssistant/", {

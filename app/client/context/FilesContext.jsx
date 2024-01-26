@@ -16,7 +16,7 @@ export function AppContext({ children }) {
     const [assistant, setAssistant] = useState({})
     const [assistantFiles, setAssistantFiles] = useState({})
     const [loadFiles, setLoadFiles] = useState(files.length == 0)
-    const [isLoadingAssistant, setIsLoadingAssistant] = useState(false)
+    const [isLoadingAssistant, setIsLoadingAssistant] = useState(true)
     const [sheetData, setSheetData] = useState([])
 
     useEffect(() => {
@@ -44,8 +44,15 @@ export function AppContext({ children }) {
     }, [files, sheetData])
 
     useEffect(()=>{
-      setSelectedFile(files.find(f => f.id == selectedFileId))
-      if (assistantFiles[selectedFileId]?.assistantId) setAssistant({id:assistantFiles[selectedFileId]?.assistantId})
+      const loadAssistant = () => {
+        setSelectedFile(files.find(f => f.id == selectedFileId))
+        if (assistantFiles[selectedFileId]?.assistantId) {
+          setAssistant({id:assistantFiles[selectedFileId]?.assistantId})
+        }
+        if (Object.keys(assistantFiles).length != 0) setIsLoadingAssistant(false)
+      }
+
+      loadAssistant()
     }, [selectedFileId, files])
     
     return (
