@@ -28,14 +28,17 @@ export default function DeleteFileBtn({ file }) {
         formData.append("fileId", file.id);
         try {
             const driveUrl = endpoints.files.urlBase
-            fetch(driveUrl, {
+            const res = await fetch(driveUrl, {
                 method: 'POST',
                 body: formData,
             });
+            const deleteOk  = await res.json() 
+            console.log(deleteOk);
+            if (!deleteOk.success) throw new Error("Fail on delete file on Google Drive")
         } catch (error) {
             console.error(error);
             console.error("Error al intentar borrar el archivo")
-            toast.error('Error on deleting file')
+            toast.error('Fail on delete file on Google Drive')
         }
         try {
             const sheetUrl = endpoints.chat.files
@@ -51,12 +54,14 @@ export default function DeleteFileBtn({ file }) {
             DeleteFileOpenai(assistantFileId)
         } catch (error) {
             console.error(error);
+            toast.error('Fail at delete assistants files')
         }
         try {
             const assistantId = assistantFiles[file.id].assistantId
             DeleteChatOpenai(assistantId)
         } catch (error) {
             console.error(error);
+            toast.error('Fail at delete assistant')
         }
         finally {
             deleteFileRow()

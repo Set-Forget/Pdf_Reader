@@ -21,11 +21,15 @@ const AddFileBtn = () => {
     try {
       const data = await UploadFileAppscript(file)
       if ( !data.success ) throw new Error(data.error)
+      let fileType = file.type
+      if (file.type == "application/pdf") fileType = "PDF"
+      if (file.type == "application/vnd.google-apps.spreadsheet" || file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ) fileType = "Sheet"
+      
       const newFile = {
         title : data.fileName,
         id : data.fileId,
         url : data.fileUrl,
-        type : file.type
+        type : fileType
       }
 
       const assistantName = `PDF_READER_${newFile.id}`
