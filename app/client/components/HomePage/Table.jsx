@@ -15,10 +15,10 @@ export default function TableComponent() {
               File Name
             </th>
             <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 uppercase">
-              File Link
+              File Type
             </th>
             <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 uppercase">
-              File Type
+              File Link
             </th>
           </tr>
         </thead>
