@@ -54,7 +54,7 @@ export function AppContext({ children }) {
       }
 
       loadAssistant()
-    }, [selectedFileId, files])
+    }, [selectedFileId, files, sheetData])
     
     return (
       <FileContext.Provider value={{
