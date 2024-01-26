@@ -19,6 +19,23 @@ export function AppContext({ children }) {
     const [isLoadingAssistant, setIsLoadingAssistant] = useState(true)
     const [sheetData, setSheetData] = useState([])
 
+    const updateAssistantList = () => {
+      const list = {}
+      for (let i = 0; i < sheetData.length; i++) {
+        const row = sheetData[i];
+        list[row.fileId] = { assistantId:row.assistantId, assistantFileId: row.assistantFileId }
+      }
+      setAssistantFiles(list)
+    }
+
+    const loadAssistant = () => {
+      setSelectedFile(files.find(f => f.id == selectedFileId))
+      if (assistantFiles[selectedFileId]?.assistantId) {
+        setAssistant({id:assistantFiles[selectedFileId]?.assistantId})
+      }
+      if (Object.keys(assistantFiles).length != 0) setIsLoadingAssistant(false)
+    }
+
     useEffect(() => {
       GetAllFiles().then(
         res => {
@@ -26,35 +43,19 @@ export function AppContext({ children }) {
           setFiles(list)
           setLoadFiles(false)
           setSheetData(res.data)
+          updateAssistantList()
+          loadAssistant()
         }
       )
     }, [])
 
     useEffect(()=>{
-      const updateAssistantList = () => {
-        const list = {}
-        for (let i = 0; i < sheetData.length; i++) {
-          const row = sheetData[i];
-          list[row.fileId] = { assistantId:row.assistantId, assistantFileId: row.assistantFileId }
-        }
-        setAssistantFiles(list)
-      }
-
       updateAssistantList()
-    }, [files, sheetData])
+    }, [files])
 
     useEffect(()=>{
-      const loadAssistant = () => {
-        setSelectedFile(files.find(f => f.id == selectedFileId))
-        if (assistantFiles[selectedFileId]?.assistantId) {
-          setAssistant({id:assistantFiles[selectedFileId]?.assistantId})
-        }
-        console.log(Object.keys(assistantFiles));
-        if (Object.keys(assistantFiles).length != 0) setIsLoadingAssistant(false)
-      }
-
       loadAssistant()
-    }, [selectedFileId, files, sheetData])
+    }, [selectedFileId, files])
     
     return (
       <FileContext.Provider value={{
