@@ -49,6 +49,7 @@ export function AppContext({ children }) {
         if (assistantFiles[selectedFileId]?.assistantId) {
           setAssistant({id:assistantFiles[selectedFileId]?.assistantId})
         }
+        console.log(Object.keys(assistantFiles));
         if (Object.keys(assistantFiles).length != 0) setIsLoadingAssistant(false)
       }
 
