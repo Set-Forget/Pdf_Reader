@@ -1,9 +1,13 @@
 import endpoints from "@/client/utils/endpoints";
 
-export default async function SaveFilesIds(fileId, assistantFileId, assistantId ) {
+export default async function SaveFilesIds(file, assistantFileId, assistantId ) {
+
     const formData = new FormData();
     formData.append("action", "upload");
-    formData.append("fileId", fileId);
+    formData.append("fileId", file.id);
+    formData.append("fileName", file.title);
+    formData.append("fileUrl", file.url);
+    formData.append("fileType", file.type);
     formData.append("assistantFileId", assistantFileId);
     formData.append("assistantId", assistantId);
 

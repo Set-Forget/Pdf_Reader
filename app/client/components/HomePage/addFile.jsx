@@ -18,20 +18,22 @@ const AddFileBtn = () => {
   const handleSubmit = async (file) => {
     if (!file) return;
     setLoading(true)
-    const newFile = {}
     try {
       const data = await UploadFileAppscript(file)
-      newFile.title = data.fileName,
-      newFile.id = data.fileId,
-      newFile.url = data.fileUrl,
-      newFile.type = file.type
+      if ( !data.success ) throw new Error(data.error)
+      const newFile = {
+        title : data.fileName,
+        id : data.fileId,
+        url : data.fileUrl,
+        type : file.type
+      }
 
       const assistantName = `PDF_READER_${newFile.id}`
       const newAssistant = await fetchCreateAssistant(assistantName)
       const assistantFile = await UploadFileOpenai(file)
 
       if (newAssistant && assistantFile) {
-        SaveFilesIds(newFile.id, assistantFile?.fileId, newAssistant?.id)
+        SaveFilesIds(newFile, assistantFile?.fileId, newAssistant?.id)
         RenewAsistantFile(assistantFile?.fileId, newAssistant?.id)
         setFiles([newFile, ...files])
       } else {
