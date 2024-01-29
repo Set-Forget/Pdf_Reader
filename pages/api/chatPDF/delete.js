@@ -1,9 +1,9 @@
-async function chatPDFDelete(...srcs) {
+export default async function chatPDFDelete(req, res) {
     const apiUrl = "https://api.chatpdf.com/v1/sources/delete"
     const opt = {
         "method": "POST",
         "body" : JSON.stringify({
-            sources: srcs,
+            sources: [sourceId],
           }),
         "headers": {
             "x-api-key": process.env.CHATPDF_API_KEY,

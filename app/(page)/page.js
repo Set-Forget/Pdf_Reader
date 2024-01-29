@@ -1,6 +1,7 @@
 "use client";
 import AddFileBtn from "@client/components/HomePage/addFile";
 import TableComponent from "@/client/components/HomePage/Table";
+import AddFileChatPDFBtn from "@/client/components/HomePage/addFileChatPDF";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
           <h2 className="uppercase font-bold text-2xl">Dashboard</h2>
         </div>
         <div>
+          <AddFileChatPDFBtn />
           <AddFileBtn />
         </div>
       </div>

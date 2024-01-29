@@ -1,4 +1,4 @@
-async function chatPDFMsg() {
+export default async function chatPDFMsg(req, res) {
     const req = {
         referenceSources: true,
         sourceId: "src_L6XL9ZzNo8HrAof2Hkh7s",
