@@ -55,7 +55,7 @@ export function AppContext({ children }) {
 
     useEffect(()=>{
       loadAssistant()
-    }, [selectedFileId, files])
+    }, [selectedFileId, files, assistantFiles])
     
     return (
       <FileContext.Provider value={{

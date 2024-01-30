@@ -15,14 +15,25 @@ const AddFileChatPDFBtn = () => {
     try {
       const formData = new FormData()
       formData.append("file", file)
-      const id = await fetch("/api/chatPDF/upload", {
-        "method": "POST",
-        "body" : formData,
-      })
+      const response = await fetch("https://api.chatpdf.com/v1/sources/add-file", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "x-api-key": "sec_cnhGjyyl4Z8iqNd63Ld4WgfWjut4VMAo",
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json()
+      console.log(data);
+      const sourceId = data.sourceId
+      
       const newFile = {
         title : file.name,
-        id : id,
+        id : sourceId,
         url : "file.fileUrl",
         type : file.type
       }

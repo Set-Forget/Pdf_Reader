@@ -2,19 +2,15 @@
 
 import { useContextHook } from "@/client/context/FilesContext";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function FileView({}) {
     const [isIframeOpen, setIsIframeOpen] = useState(true);
     const { id } = useParams()
 
     const {
-        selectedFile, setSelectedFileId
-    } = useContextHook()
-
-    useEffect(()=>{
-      setSelectedFileId(id)
-    }, [])
+        selectedFile,
+    } = useContextHook()    
 
     const handlePdfClick = () => {
         setIsIframeOpen(true);

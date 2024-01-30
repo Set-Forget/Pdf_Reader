@@ -1,18 +1,15 @@
 'use client'
 import Link from "next/link";
 import DeleteFileBtn from "./deleteFile";
-import { useContextHook } from "@/client/context/FilesContext";
+import files from '@/server/files/data.json';
 
 export default function TableBodyComponent() {
-  const {
-    files
-  } = useContextHook()
 
   return (
     <tbody className="divide-y divide-gray-200">
         {files.length > 0 ?
-          files.map((file) => (
-            <TableRow key={file.id} file={file} />
+          files.map((file, i) => (
+            <TableRow key={file.id + i} file={file} />
           ))
           :
           <tr className="text-gray-500">

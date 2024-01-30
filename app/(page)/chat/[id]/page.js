@@ -1,58 +1,53 @@
 'use client'
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { useContextHook } from "@/client/context/FilesContext";
 
 import FileView from "@/client/components/ChatPage/FileViewer";
-import AskToChat from "@/client/services/askChat";
-import getChatResponse from "@/client/services/getChatResponse";
 import Spinner from "@/client/components/Spinner";
 import Dialogue from "@/client/components/ChatPage/dialogeComponent";
 
 function ChatPage() {
+  const { id } = useParams()
+
   const {
-    assistant, isLoadingAssistant
+    isLoadingAssistant, setSelectedFileId
   } = useContextHook()
+
+  useEffect(()=>{
+    setSelectedFileId(id)
+  }, [])
   
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const dataExists = async () => {
-    const resp = await fetch("/api/chat/retrieveAssistant/", {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({assistantId: assistant.id}),
-  })
-    return await resp.json()
-  }
 
   const handleSend = async () => {
     if (input.trim()) {
       setMessages([...messages, { text: "User: " + input, sender: "user" }]);
       setIsLoading(true);
-      let inputToSend = input;
       setInput("");
-
       try {
-        const ok = await dataExists()
-        if ( !ok.success ) throw new Error(ok.message)
-        if ( ok.assistant.file_ids.length == 0 ) throw new Error("Assistant does not have any files associated with it")
+        
         // Enviar la pregunta al chatbot
-        const startChat = await AskToChat(inputToSend, assistant.id)
-        let chatResponseStatus = "incolmplete"
-        let chat
-        do {
-          chat = await getChatResponse(startChat.threadId, startChat.runId)
-          console.log(chat);
-          chatResponseStatus = chat?.status
-          if (chatResponseStatus != "completed") await new Promise(resolve => setTimeout(resolve, 3500));
-        } while (chatResponseStatus != "completed");
+        const chatResponse = await fetch("/api/chatPDF/chat",{
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({
+            sourceId: id,
+            userMessage: input
+          })
+        })
+        let data = await chatResponse.json()
+        
+        console.log(data);
         
         setMessages((messages) => [
           ...messages,
-          { text: "IA: " + chat?.message, sender: "ia" },
+          { text: "IA: " + data?.content, sender: "ia" },
         ]);
       } catch (error) {
         console.error("There was an error!", error);

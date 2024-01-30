@@ -1,54 +1,78 @@
 import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
-import os from 'os';
+import FormData from 'form-data';
+
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
 
 export default async function chatPDFUpload(req, res) {
-    try {
-        const data = await new Promise(function(resolve, reject) {
-            const form = formidable({})
-
-            form.parse(req, function(err, fields, files) {
-              if (err) return reject(err)
-              resolve({ fields, files })
+    
+    if (req.method === 'POST') {
+        try {
+            const data = await new Promise(function(resolve, reject) {
+                const form = formidable({})
+    
+                form.parse(req, function(err, fields, files) {
+                  if (err) return reject(err)
+                  resolve({ fields, files })
+                });
             });
-        });
+    
+            const file = data.files.file[0]
+            if (!file) {
+                return res.status(400).json({ error: "No file uploaded." })
+            }
+    
+            const filesDir = path.join(process.cwd(), 'app', 'server', 'files');
+            if (!fs.existsSync(filesDir)) {
+                fs.mkdirSync(filesDir, { recursive: true });
+            }
 
-        const file = data.files.file[0]
-        if (!file) {
-            return res.status(400).json({ error: "No file uploaded." })
+            const savedFilePath = path.join(filesDir, file.originalFilename);
+            fs.renameSync(file.filepath, savedFilePath);
+
+            const formData = new FormData();
+            formData.append("file", fs.createReadStream(savedFilePath));
+
+            const apiUrl = "https://api.chatpdf.com/v1/sources/add-file";
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "x-api-key": process.env.CHATPDF_API_KEY,
+                    ...formData.getHeaders(),
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+            }
+    
+            const sourceId = await fetch(apiUrl, opt)
+            .then((response) => {
+                if (!response.ok) throw new Error(response.statusText)
+                return response.json()
+            })
+            .then((data) => {
+                console.log("data:", data);
+                console.log("Source ID:", data.sourceId);
+                return data?.sourceId
+            })
+            .catch((error) => {
+                console.log("Error:", error.message);
+            });
+    
+            fs.unlinkSync(savedFilePath);
+            res.status(200).json({ message: 'File uploaded successfully', id: sourceId })
+        } catch (error) {
+            res.status(500).json({ error: "Error uploading file to chatPDF. " + error.message });   
         }
-
-        const tempDir = os.tmpdir()
-        const savedFilePath = path.join(tempDir, file.originalFilename)
-        fs.renameSync(file.filepath, savedFilePath);
-        console.log("temp filepath: ", savedFilePath);
-
-        const apiUrl = "https://api.chatpdf.com/v1/sources/add-file"
-        const opt = {
-            "method": "POST",
-            "body" : JSON.stringify({
-                "file": fs.createReadStream(savedFilePath)
-            }),
-            "headers": {
-                "x-api-key": process.env.CHATPDF_API_KEY,
-                "Content-Type": "application/json",
-            },
-        }
-
-        const sourceId = await fetch(apiUrl, opt)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log("Source ID:", data.sourceId);
-            return data?.sourceId
-        })
-        .catch((error) => {
-            console.log("Error:", error.message);
-        });
-
-        fs.unlinkSync(savedFilePath);
-        res.status(200).json({ message: 'File uploaded successfully', fileId: sourceId })
-    } catch (error) {
-        res.status(500).json({ error: "Error uploading file to chatPDF." });   
+    } else {
+        res.setHeader('Allow', ['POST']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
