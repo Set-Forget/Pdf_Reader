@@ -32,18 +32,32 @@ function ChatPage() {
       try {
         
         // Enviar la pregunta al chatbot
-        const chatResponse = await fetch("/api/chatPDF/chat",{
-          method: "POST",
-          headers: {
-            "content-type": "application/json"
-          },
-          body: JSON.stringify({
-            sourceId: chatId,
-            userMessage: input
-          })
+        const userMsg = {
+          referenceSources: true,
+          sourceId: chatId,
+          messages: [
+            {
+              role: "user",
+              content: input,
+            },
+          ],
+        };
+  
+        const apiUrl = "https://api.chatpdf.com/v1/chats/message"
+        const response = await fetch(apiUrl, {
+            "method": "POST",
+            "body" : JSON.stringify(userMsg),
+            "headers": {
+                "x-api-key": "sec_cnhGjyyl4Z8iqNd63Ld4WgfWjut4VMAo",
+                "Content-Type": "application/json",
+              },
         })
-        let data = await chatResponse.json()
-        console.log(data);
+    
+        if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json()
 
         const content = data?.content
         const ref = data?.references
