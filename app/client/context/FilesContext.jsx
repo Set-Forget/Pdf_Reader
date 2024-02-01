@@ -14,30 +14,33 @@ export function AppContext({ children }) {
     const [files, setFiles] = useState([])
     const [selectedFile, setSelectedFile] = useState({})
     const [selectedFileId, setSelectedFileId] = useState("")
-    const [assistant, setAssistant] = useState({})
-    const [assistantFiles, setAssistantFiles] = useState({})
     const [loadFiles, setLoadFiles] = useState(files?.length == 0)
-    const [isLoadingAssistant, setIsLoadingAssistant] = useState(true)
-    const [sheetData, setSheetData] = useState([])
 
     useEffect(() => {
       GetAllFiles().then(
         res => {
           if ( res && res.success ) {
-            const list = res?.data?.map( l => new ChatFile(l.fileName, l.fileId, `https://drive.google.com/file/d/${l.fileId}/view`, l.fileType, l.assistantFileID ) )
+            const list = res?.data?.map( l => new ChatFile(l.fileName, l.fileId, `https://drive.google.com/file/d/${l.fileId}/view`, l.fileType, l.assistantFileId ) )
             setFiles(list)
           }
           setLoadFiles(false)
         }
       )
     }, [])
+
+    useEffect(()=>{
+      if (selectedFileId) {
+        const fileSelected = files.find( f => f.driveId == selectedFileId )
+        setSelectedFile(fileSelected)
+      }
+    }, [selectedFileId])
     
     return (
       <FileContext.Provider value={{
-        files, setFiles, selectedFile,
+        files, setFiles,
         loadFiles, setLoadFiles,
-        assistant, assistantFiles, isLoadingAssistant, setIsLoadingAssistant, 
-        selectedFileId, setSelectedFileId
+        selectedFileId, setSelectedFileId,
+        selectedFile
        }}>
         { children }
       </FileContext.Provider>

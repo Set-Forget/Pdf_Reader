@@ -1,21 +1,22 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useContextHook } from "@/client/context/FilesContext";
 
 import FileView from "@/client/components/ChatPage/FileViewer";
-import Spinner from "@/client/components/Spinner";
 import Dialogue from "@/client/components/ChatPage/dialogeComponent";
 
 function ChatPage() {
-  const { id } = useParams()
+  const query = useSearchParams()
+  const fileId = query.get("fileId")
+  const chatId = query.get("chatId")
 
   const {
-    isLoadingAssistant, setSelectedFileId
+    setSelectedFileId
   } = useContextHook()
 
   useEffect(()=>{
-    setSelectedFileId(id)
+    setSelectedFileId(fileId)
   }, [])
   
   const [messages, setMessages] = useState([]);
@@ -37,13 +38,11 @@ function ChatPage() {
             "content-type": "application/json"
           },
           body: JSON.stringify({
-            sourceId: id,
+            sourceId: chatId,
             userMessage: input
           })
         })
         let data = await chatResponse.json()
-        
-        console.log(data);
         
         setMessages((messages) => [
           ...messages,
@@ -66,7 +65,7 @@ function ChatPage() {
       {/* Contenedor del chat */}
       <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col p-4">
         {/* Mensajes del chat */}
-        { isLoadingAssistant ? <Spinner/> : <Dialogue messages={messages} isLoading={isLoading} /> }
+        <Dialogue messages={messages} isLoading={isLoading} />
         {/* Área fija de entrada de texto y botones */}
         <div className="mt-auto flex items-center space-x-2 px-2">
           <input

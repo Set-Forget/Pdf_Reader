@@ -1,5 +1,5 @@
 "use client";
-import AddFileBtn from "@client/components/HomePage/addFile";
+
 import TableComponent from "@/client/components/HomePage/Table";
 import AddFileChatPDFBtn from "@/client/components/HomePage/addFileChatPDF";
 
@@ -13,7 +13,6 @@ export default function Home() {
         </div>
         <div>
           <AddFileChatPDFBtn />
-          <AddFileBtn />
         </div>
       </div>
       <TableComponent/>
