@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useContextHook } from "@/client/context/FilesContext";
 import { toast } from 'sonner';
+import UploadFileAppscript from "@/client/services/uploadFileAppscript";
+import SaveFilesIds from "@/client/services/saveFilesOnSheet";
+import { ChatFile } from "@/server/models/files";
 
 const AddFileChatPDFBtn = () => {
   const [onLoad, setLoading] = useState(false)
@@ -9,34 +12,42 @@ const AddFileChatPDFBtn = () => {
     setFiles, files
   } = useContextHook()
 
+  const uploadFileChatPdf = async (file) => {
+    const formData = new FormData()
+    formData.append("file", file)
+    const response = await fetch("https://api.chatpdf.com/v1/sources/add-file", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "x-api-key": "sec_cnhGjyyl4Z8iqNd63Ld4WgfWjut4VMAo",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.json()
+  }
+
   const handleSubmit = async (file) => {
     if (!file) return;
     setLoading(true)
     try {
-      const formData = new FormData()
-      formData.append("file", file)
-      const response = await fetch("https://api.chatpdf.com/v1/sources/add-file", {
-        method: "POST",
-        body: formData,
-        headers: {
-          "x-api-key": "sec_cnhGjyyl4Z8iqNd63Ld4WgfWjut4VMAo",
-        },
-      });
 
-      if (!response.ok) {
-        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
-      }
+      const driveResp = await UploadFileAppscript(file)
+      if ( !driveResp.success ) throw new Error(driveResp.error)
 
-      const data = await response.json()
-      console.log(data);
-      const sourceId = data.sourceId
+      const chatPdfResp = await uploadFileChatPdf(file)
+      const sourceId = chatPdfResp.sourceId
+
+      let fileType = file.type
+      if (file.type == "application/pdf") fileType = "PDF"
+      if (file.type == "application/vnd.google-apps.spreadsheet" || file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ) fileType = "Sheet"
       
-      const newFile = {
-        title : file.name,
-        id : sourceId,
-        url : "file.fileUrl",
-        type : file.type
-      }
+      const newFile = new ChatFile(driveResp.fileName, driveResp.fileId, driveResp.fileUrl, fileType, sourceId)
+
+      SaveFilesIds(newFile, sourceId, null)
       setFiles([newFile, ...files])
 
     } catch (error) {

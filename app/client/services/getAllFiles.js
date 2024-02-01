@@ -5,8 +5,7 @@ export default async function GetAllFiles () {
     
     try {    
         const baseUrl = endpoints.chat.files;
-        // const endpoint = endpoints.files.list;
-        const response = await fetch(baseUrl )
+        const response = await fetch(baseUrl)
         if (!response.ok) {
             throw new Error('Error en la carga de archivos')
         }

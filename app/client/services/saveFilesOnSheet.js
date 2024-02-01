@@ -4,8 +4,8 @@ export default async function SaveFilesIds(file, assistantFileId, assistantId ) 
 
     const formData = new FormData();
     formData.append("action", "upload");
-    formData.append("fileId", file.id);
-    formData.append("fileName", file.title);
+    formData.append("fileId", file.driveId);
+    formData.append("fileName", file.name);
     formData.append("fileType", file.type);
     formData.append("assistantFileId", assistantFileId);
     formData.append("assistantId", assistantId);
