@@ -43,10 +43,13 @@ function ChatPage() {
           })
         })
         let data = await chatResponse.json()
-        
+        console.log(data);
+
+        const content = data?.content
+        const ref = data?.references
         setMessages((messages) => [
           ...messages,
-          { text: "IA: " + data?.content, sender: "ia" },
+          { text: "IA: " + content, sender: "ia" },
         ]);
       } catch (error) {
         console.error("There was an error!", error);
