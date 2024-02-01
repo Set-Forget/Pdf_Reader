@@ -5,7 +5,7 @@ import UploadFileAppscript from "@/client/services/uploadFileAppscript";
 import SaveFilesIds from "@/client/services/saveFilesOnSheet";
 import { ChatFile } from "@/server/models/files";
 
-const AddFileChatPDFBtn = () => {
+const AddFileBtn = () => {
   const [onLoad, setLoading] = useState(false)
 
   const {
@@ -85,4 +85,4 @@ const AddFileChatPDFBtn = () => {
   );
 };
 
-export default AddFileChatPDFBtn;
+export default AddFileBtn;

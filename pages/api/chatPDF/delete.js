@@ -1,25 +1,26 @@
 export default async function chatPDFDelete(req, res) {
-    const apiUrl = "https://api.chatpdf.com/v1/sources/delete"
-    const opt = {
-        "method": "POST",
-        "body" : JSON.stringify({
-            sources: [sourceId],
-          }),
-        "headers": {
-            "x-api-key": process.env.CHATPDF_API_KEY,
-            "Content-Type": "application/json",
-          },
-    }
+    try {
+        const { sourceId } = req.body
+        const apiUrl = "https://api.chatpdf.com/v1/sources/delete"
+        const opt = {
+            "method": "POST",
+            "body" : JSON.stringify({
+                sources: [sourceId],
+            }),
+            "headers": {
+                "x-api-key": process.env.CHATPDF_API_KEY,
+                "Content-Type": "application/json",
+            },
+        }
 
-    const res = await fetch(apiUrl, opt)
-    .then((response) => response.json())
-    .then((data) => {
-        console.log("Source ID:", data);
-        return data
-    })
-    .catch((error) => {
-        console.log("Error:", error.message);
-    });
+        const response = await fetch(apiUrl, opt)
+        
+        if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
+        }
     
-    return res
+        res.status(200).json({message:"success"})
+    } catch (error) {
+        res.status(500).json({ error: "Error uploading file to chatPDF. " + error.message });   
+    }
 }

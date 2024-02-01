@@ -3,19 +3,16 @@ import { useState } from "react"
 import { toast } from 'sonner';
 import endpoints from "@client/utils/endpoints";
 import { useContextHook } from "@/client/context/FilesContext";
-import DeleteChatOpenai from "@/client/services/deleteChatOpenai";
-import DeleteFileOpenai from "@/client/services/deleteFileOpenai";
 
 export default function DeleteFileBtn({ file }) {
     const [onDelete, setLoading] = useState(false)
 
     const {
-        setFiles, files, 
-        assistantFiles
+        setFiles, files
     } = useContextHook()
 
     const deleteFileRow = () => {
-        const newFileList = files.filter(f => f.id != file.id)
+        const newFileList = files.filter(f => f.driveId != file.driveId)
         setFiles(newFileList)
     }
 
@@ -24,8 +21,8 @@ export default function DeleteFileBtn({ file }) {
         setLoading(true)
         const formData = new FormData();
         formData.append("action", "delete");
-        formData.append("fileName", file.title);
-        formData.append("fileId", file.id);
+        formData.append("fileName", file.name);
+        formData.append("fileId", file.driveId);
         try {
             const driveUrl = endpoints.files.urlBase
             const res = await fetch(driveUrl, {
@@ -33,40 +30,49 @@ export default function DeleteFileBtn({ file }) {
                 body: formData,
             });
             const deleteOk  = await res.json() 
-            console.log(deleteOk);
             if (!deleteOk.success) throw new Error("Fail on delete file on Google Drive")
+            toast.success("Delete file from Google Drive")
         } catch (error) {
             console.error(error);
             console.error("Error al intentar borrar el archivo")
             toast.error('Fail on delete file on Google Drive')
-        }
-        try {
-            const sheetUrl = endpoints.chat.files
-            fetch(sheetUrl, {
-                method: 'POST',
-                body: formData,
-            });
-        } catch (error) {
-            console.error(error);
-        }
-        try {
-            const assistantFileId = assistantFiles[file.id].assistantFileId
-            DeleteFileOpenai(assistantFileId)
-        } catch (error) {
-            console.error(error);
-            toast.error('Fail at delete assistants files')
-        }
-        try {
-            const assistantId = assistantFiles[file.id].assistantId
-            DeleteChatOpenai(assistantId)
-        } catch (error) {
-            console.error(error);
-            toast.error('Fail at delete assistant')
-        }
-        finally {
+        } finally {
             deleteFileRow()
             setLoading(false)
         }
+
+        const sheetUrl = endpoints.chat.files
+        fetch(sheetUrl, {
+            method: 'POST',
+            body: formData,
+        })
+        .then( (data)=> data.json())
+        .then( (res)=> {
+            if (res.success) toast.success("Delete file information from Spreadsheet")
+            if (!res.success) throw new Error(res.error)
+        })
+        .catch((error)=>{
+            console.error(error);
+            toast.error('Fail on delete file info from Spreadsheet')
+        })
+    
+        fetch("/api/chatPDF/delete", {
+            method: "POST",
+            headers: {
+            "content-type": "application/json"
+            },
+            body: JSON.stringify({
+            sourceId: file.chatId,
+            })
+        })
+        .then( ()=> {
+            toast.success("Delete file information from chatPDF")
+        })
+        .catch((error)=>{
+            console.error(error);
+            toast.error('Fail on delete chatPDF file')
+        })
+        
     }
 
     return (
