@@ -19,7 +19,7 @@ export default async function chatPDFMsg(req, res) {
             "method": "POST",
             "body" : JSON.stringify(userMsg),
             "headers": {
-                "x-api-key": process.env.CHATPDF_API_KEY,
+                "x-api-key": "sec_cnhGjyyl4Z8iqNd63Ld4WgfWjut4VMAo",
                 "Content-Type": "application/json",
               },
         })
@@ -28,7 +28,6 @@ export default async function chatPDFMsg(req, res) {
             throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
         }
         const content = await response.json()
-        console.log("content: ", content);
         res.status(200).json(content)
     } catch (error) {
         res.status(500).json({ error: "Error uploading file to chatPDF. " + error.message });   

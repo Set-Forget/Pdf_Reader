@@ -8,7 +8,7 @@ export default async function chatPDFDelete(req, res) {
                 sources: [sourceId],
             }),
             "headers": {
-                "x-api-key": process.env.CHATPDF_API_KEY,
+                "x-api-key": "sec_cnhGjyyl4Z8iqNd63Ld4WgfWjut4VMAo",
                 "Content-Type": "application/json",
             },
         }
