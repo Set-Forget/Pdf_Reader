@@ -52,19 +52,7 @@ export default async function chatPDFUpload(req, res) {
                 throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
             }
     
-            const sourceId = await fetch(apiUrl, opt)
-            .then((response) => {
-                if (!response.ok) throw new Error(response.statusText)
-                return response.json()
-            })
-            .then((data) => {
-                console.log("data:", data);
-                console.log("Source ID:", data.sourceId);
-                return data?.sourceId
-            })
-            .catch((error) => {
-                console.log("Error:", error.message);
-            });
+            const {sourceId} = await response.json()
     
             fs.unlinkSync(savedFilePath);
             res.status(200).json({ message: 'File uploaded successfully', id: sourceId })
