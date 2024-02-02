@@ -56,13 +56,13 @@ export default function DeleteFileBtn({ file }) {
             toast.error('Fail on delete file info from Spreadsheet')
         })
     
-        fetch("/api/chatPDF/delete", {
-            method: "POST",
+        fetch(endpoints.chatPDF.delete, {
+            method: "DELETE",
             headers: {
-            "content-type": "application/json"
+                "content-type": "application/json"
             },
             body: JSON.stringify({
-            sourceId: file.chatId,
+                sourceId: file.chatId,
             })
         })
         .then( ()=> {

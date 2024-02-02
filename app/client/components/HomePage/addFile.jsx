@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import UploadFileAppscript from "@/client/services/uploadFileAppscript";
 import SaveFilesIds from "@/client/services/saveFilesOnSheet";
 import { ChatFile } from "@/server/models/files";
+import endpoints from "@/client/utils/endpoints";
 
 const AddFileBtn = () => {
   const [onLoad, setLoading] = useState(false)
@@ -15,12 +16,9 @@ const AddFileBtn = () => {
   const uploadFileChatPdf = async (file) => {
     const formData = new FormData()
     formData.append("file", file)
-    const response = await fetch("https://api.chatpdf.com/v1/sources/add-file", {
+    const response = await fetch(endpoints.chatPDF.upload, {
       method: "POST",
       body: formData,
-      headers: {
-        "x-api-key": "sec_cnhGjyyl4Z8iqNd63Ld4WgfWjut4VMAo",
-      },
     });
 
     if (!response.ok) {

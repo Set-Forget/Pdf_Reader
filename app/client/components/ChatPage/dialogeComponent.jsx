@@ -6,7 +6,7 @@ export default function Dialogue({messages, isLoading}) {
               key={index}
               className={`p-2 my-1 text-sm font-medium rounded-md ${message.sender === "user"
                   ? "self-end bg-blue-100"
-                  : "bg-gray-100 self-start"
+                  : message.text.includes("an error occurred") ? "bg-red-100 self-start" : "bg-gray-100 self-start"
                 }`}
             >
               {message.sender === "ia" ? (
