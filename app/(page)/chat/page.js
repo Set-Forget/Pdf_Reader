@@ -44,6 +44,8 @@ function ChatPage() {
             }),
             "headers": {
                 "Content-Type": "application/json",
+                'Access-Control-Request-Method': 'POST',
+                'Access-Control-Request-Headers': 'Content-Type',
               },
         })
     
