@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 
 export default function Header() {
@@ -15,8 +16,8 @@ export default function Header() {
             className="ml-6 flex justify-center items-center gap-1"
             href={`${BASE_URL}home`}
           >
-            <img
-              src="2.png"
+            <Image
+              src="/2.png"
               width={24}
               height={24}
               alt="Icon Home Value"
@@ -27,8 +28,8 @@ export default function Header() {
             className="ml-4 flex justify-center items-center gap-1"
             href="/"
           >
-            <img
-              src="3.png"
+            <Image
+              src="/3.png"
               width={24}
               height={24}
               alt="Icon PDF ChatBot"
@@ -39,8 +40,8 @@ export default function Header() {
             className="ml-4 flex justify-center items-center gap-1"
             href={`${BASE_URL}calculator`}
           >
-            <img
-              src="4.png"
+            <Image
+              src="/4.png"
               width={24}
               height={24}
               alt="Icon Pricing Calculator"
