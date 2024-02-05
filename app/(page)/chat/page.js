@@ -33,21 +33,36 @@ function ChatPage() {
       try {
 
         if (!chatId || chatId == "undefined") throw new Error("Assistant not found")
-        
-        // Enviar la pregunta al chatbot  
-        const apiUrl = endpoints.chatPDF.chat
-        const response = await fetch(apiUrl, {
-            "method": "POST",
-            "body" : JSON.stringify({
-              userMessage: input,
-              sourceId: chatId
-            }),
-            "headers": {
-                "Content-Type": "application/json",
-                'Access-Control-Request-Method': 'POST',
-                'Access-Control-Request-Headers': 'Content-Type',
-              },
-        })
+        // const chatForm = new FormData()
+        // chatForm.append('userMessage', input)
+        // chatForm.append('sourceId', chatId)
+        // // Enviar la pregunta al chatbot  
+        // const apiUrl = endpoints.chatPDF.chat
+        // const response = await fetch(apiUrl, {
+        //     "method": "POST",
+        //     "body" : chatForm,
+        // })
+
+        const userMsg = {
+              referenceSources: true,
+              sourceId: chatId,
+              messages: [
+                {
+                  role: "user",
+                  content: input,
+                },
+              ],
+          };
+
+          const apiUrl = "https://api.chatpdf.com/v1/chats/message"
+          const response = await fetch(apiUrl, {
+              "method": "POST",
+              "body" : JSON.stringify(userMsg),
+              "headers": {
+                  "x-api-key": "sec_cnhGjyyl4Z8iqNd63Ld4WgfWjut4VMAo",
+                  "Content-Type": "application/json",
+                },
+          })
     
         if (!response.ok) {            
           const errorBody = await response.text();
