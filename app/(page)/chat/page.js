@@ -63,7 +63,8 @@ function ChatPage() {
                   "Content-Type": "application/json",
                 },
           })
-    
+        
+        console.log(response);
         if (!response.ok) {            
           const errorBody = await response.text();
           throw new Error(`Server responded with ${response.status}: ${response.statusText}. Details: ${errorBody}`);
