@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <AppContext>
           <Toaster position="top-right" richColors closeButton />
           <div className="flex justify-center items-center h-screen bg-ross-green">
