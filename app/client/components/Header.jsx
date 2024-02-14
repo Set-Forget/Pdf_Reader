@@ -12,7 +12,7 @@ export default function Header() {
               alt="Logo"
               className="w-10 h-10 rounded-full"
               />
-          <Link
+          <a
             className="ml-6 flex justify-center items-center gap-1"
             href={`${BASE_URL}home`}
           >
@@ -23,7 +23,7 @@ export default function Header() {
               alt="Icon Home Value"
             />
             <span>Home Value</span>
-          </Link>
+          </a>
           <Link
             className="ml-4 flex justify-center items-center gap-1"
             href="/"
@@ -36,7 +36,7 @@ export default function Header() {
             />
             <span>PDF ChatBot</span>
           </Link>
-          <Link
+          <a
             className="ml-4 flex justify-center items-center gap-1"
             href={`${BASE_URL}calculator`}
           >
@@ -47,7 +47,7 @@ export default function Header() {
               alt="Icon Pricing Calculator"
             />
             <span>Pricing Calculator</span>
-          </Link>
+          </a>
         </div>
         <div></div>
       </header>
