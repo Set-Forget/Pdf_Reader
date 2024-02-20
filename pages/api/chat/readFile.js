@@ -5,8 +5,8 @@ export default async function handlerAssistantReadFile(req, res) {
     const assistantId = req.body.assistantId;
     if (req.method === 'POST') {
         try {
-            const assistant = await updateFileToRead(assistantId, selectedFileId)
-            res.status(200).json(assistant)
+            await updateFileToRead(assistantId, selectedFileId)
+            res.status(200)
         } catch (error) {
             res.status(500).json({ error: 'Error del servidor' });
         }

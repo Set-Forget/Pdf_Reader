@@ -42,10 +42,9 @@ export async function getAssistant() {
 export async function updateFileToRead(assistantId, fileId) {
   const file_ids = []
   if (fileId) file_ids.push(fileId)
-  const response = await openai.beta.assistants.update(assistantId, {
+  await openai.beta.assistants.update(assistantId, {
       file_ids: file_ids,
   });
-  return response
 }
 
 async function uploadAssistantFile(assistantId, fileId) {
