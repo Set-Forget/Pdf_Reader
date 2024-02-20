@@ -10,8 +10,7 @@ export default function DeleteFileBtn({ file }) {
     const [onDelete, setLoading] = useState(false)
 
     const {
-        setFiles, files, 
-        assistantFiles
+        setFiles, files
     } = useContextHook()
 
     const deleteFileRow = () => {
@@ -50,14 +49,14 @@ export default function DeleteFileBtn({ file }) {
             console.error(error);
         }
         try {
-            const assistantFileId = assistantFiles[file.id].assistantFileId
+            const assistantFileId = file.assistantFileId
             DeleteFileOpenai(assistantFileId)
         } catch (error) {
             console.error(error);
             toast.error('Fail at delete assistants files')
         }
         try {
-            const assistantId = assistantFiles[file.id].assistantId
+            const assistantId = file.assistantId
             DeleteChatOpenai(assistantId)
         } catch (error) {
             console.error(error);

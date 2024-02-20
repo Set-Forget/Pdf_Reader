@@ -1,23 +1,24 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useContextHook } from "@/client/context/FilesContext";
 
 import FileView from "@/client/components/ChatPage/FileViewer";
 import AskToChat from "@/client/services/askChat";
 import getChatResponse from "@/client/services/getChatResponse";
-import Spinner from "@/client/components/Spinner";
 import Dialogue from "@/client/components/ChatPage/dialogeComponent";
 
 function ChatPage() {
   const {
-    assistant, isLoadingAssistant, setSelectedFileId
+    setSelectedFileId
   } = useContextHook()
 
-  const { id } = useParams()
+  const query = useSearchParams()
+  const fileId = query.get("fileId")
+  const chatId = query.get("chatId")
 
   useEffect(()=>{
-    setSelectedFileId(id)
+    setSelectedFileId(fileId)
   }, [])
   
   const [messages, setMessages] = useState([]);
@@ -30,7 +31,7 @@ function ChatPage() {
       headers: {
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify({assistantId: assistant.id}),
+      body: JSON.stringify({assistantId: chatId}),
   })
     return await resp.json()
   }
@@ -45,9 +46,10 @@ function ChatPage() {
       try {
         const ok = await dataExists()
         if ( !ok.success ) throw new Error(ok.message)
+        console.log("archivos asociados: ",ok.assistant.file_ids);
         if ( ok.assistant.file_ids.length == 0 ) throw new Error("Assistant does not have any files associated with it")
         // Enviar la pregunta al chatbot
-        const startChat = await AskToChat(inputToSend, assistant.id)
+        const startChat = await AskToChat(inputToSend, chatId)
         let chatResponseStatus = "incolmplete"
         let chat
         do {
@@ -78,7 +80,7 @@ function ChatPage() {
       {/* Contenedor del chat */}
       <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col p-4">
         {/* Mensajes del chat */}
-        { isLoadingAssistant ? <Spinner/> : <Dialogue messages={messages} isLoading={isLoading} /> }
+        <Dialogue messages={messages} isLoading={isLoading} />
         {/* Área fija de entrada de texto y botones */}
         <div className="mt-auto flex items-center space-x-2 px-2">
           <input

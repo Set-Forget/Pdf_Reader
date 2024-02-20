@@ -37,7 +37,7 @@ function TableRow({ file }) {
         <a href={file.url} target="_blank">LINK</a>
       </td>
       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium flex gap-2 justify-end">
-        <Link href={`chat/${file.id}`} className="px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-600">Chat</Link>
+        <Link href={`chat?fileId=${file.id}&chatId=${file.assistantId}`} className="px-4 py-2 bg-gray-900 text-white rounded-xl hover:bg-gray-600">Chat</Link>
         <DeleteFileBtn file={file} />
       </td>
     </tr>

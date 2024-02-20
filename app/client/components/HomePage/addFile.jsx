@@ -19,16 +19,16 @@ const AddFileBtn = () => {
     if (!file) return;
     setLoading(true)
     try {
-      const data = await UploadFileAppscript(file)
-      if ( !data.success ) throw new Error(data.error)
+      const driveResp = await UploadFileAppscript(file)
+      if ( !driveResp.success ) throw new Error(driveResp.error)
       let fileType = file.type
       if (file.type == "application/pdf") fileType = "PDF"
       if (file.type == "application/vnd.google-apps.spreadsheet" || file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ) fileType = "Sheet"
       
       const newFile = {
-        title : data.fileName,
-        id : data.fileId,
-        url : data.fileUrl,
+        title : driveResp.fileName,
+        id : driveResp.fileId,
+        url : driveResp.fileUrl,
         type : fileType
       }
 
@@ -37,8 +37,10 @@ const AddFileBtn = () => {
       const assistantFile = await UploadFileOpenai(file)
 
       if (newAssistant && assistantFile) {
+        newFile.assistantId = newAssistant?.id
+        newFile.assistantFileId = assistantFile?.fileId
         SaveFilesIds(newFile, assistantFile?.fileId, newAssistant?.id)
-        RenewAsistantFile(assistantFile?.fileId, newAssistant?.id)
+        await RenewAsistantFile(assistantFile?.fileId, newAssistant?.id)
         setFiles([newFile, ...files])
       } else {
         try {
