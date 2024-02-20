@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { useContextHook } from "@/client/context/FilesContext";
 
 import FileView from "@/client/components/ChatPage/FileViewer";
@@ -10,8 +11,14 @@ import Dialogue from "@/client/components/ChatPage/dialogeComponent";
 
 function ChatPage() {
   const {
-    assistant, isLoadingAssistant
+    assistant, isLoadingAssistant, setSelectedFileId
   } = useContextHook()
+
+  const { id } = useParams()
+
+  useEffect(()=>{
+    setSelectedFileId(id)
+  }, [])
   
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
