@@ -46,7 +46,6 @@ function ChatPage() {
       try {
         const ok = await dataExists()
         if ( !ok.success ) throw new Error(ok.message)
-        console.log("archivos asociados: ",ok.assistant.file_ids);
         if ( ok.assistant.file_ids.length == 0 ) throw new Error("Assistant does not have any files associated with it")
         // Enviar la pregunta al chatbot
         const startChat = await AskToChat(inputToSend, chatId)
