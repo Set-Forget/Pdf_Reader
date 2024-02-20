@@ -32,7 +32,7 @@ const AddFileBtn = () => {
         type : fileType
       }
 
-      const assistantName = `PDF_READER_${newFile.id}`
+      const assistantName = `PDF_READER_${newFile.title}_${newFile.id}`
       const newAssistant = await fetchCreateAssistant(assistantName)
       const assistantFile = await UploadFileOpenai(file)
 

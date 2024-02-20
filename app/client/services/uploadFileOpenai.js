@@ -5,7 +5,9 @@ export default async function UploadFileOpenai(file) {
       formData.append("file", file);
       
     try {  
-        const urlChat = endpoints.chat.upload
+        let urlChat = endpoints.chat.upload
+        if (file.size < (4*1024*1024)) { urlChat = '/api/file/upload' } // Si el archivo es mas pequeño que 4MB, se redirige al endpoint del proyecto
+        
         const response = await fetch(urlChat, {
             method: 'POST',
             body: formData,
