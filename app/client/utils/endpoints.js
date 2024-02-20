@@ -6,7 +6,7 @@ const endpoints = {
         message: "/api/chat/message",
         renewFile: "/api/chat/readFile",
         delete: "/api/chat/delete",
-        upload: "https://8894-2600-1f18-762e-6b00-8243-1c75-9919-137c.ngrok-free.app/upload",
+        upload: "https://4ae7-2600-1f18-762e-6b00-8243-1c75-9919-137c.ngrok-free.app/openai/upload",
         deleteFile: "/api/file/delete",
         files: process.env.NEXT_PUBLIC_SPREADSHEET_API_URL ,
     },
