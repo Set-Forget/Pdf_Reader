@@ -24,18 +24,6 @@ export default function Header() {
             />
             <span>Home Value</span>
           </a>
-          <Link
-            className="ml-4 flex justify-center items-center gap-1"
-            href="/"
-          >
-            <Image
-              src="/3.png"
-              width={24}
-              height={24}
-              alt="Icon PDF ChatBot"
-            />
-            <span>PDF ChatBot</span>
-          </Link>
           <a
             className="ml-4 flex justify-center items-center gap-1"
             href={`${BASE_URL}calculator`}
@@ -48,6 +36,30 @@ export default function Header() {
             />
             <span>Pricing Calculator</span>
           </a>
+          <a
+            className="ml-4 flex justify-center items-center gap-1"
+            href={`${BASE_URL}form`}
+          >
+            <Image
+              src="/3.png"
+              width={24}
+              height={24}
+              alt="Icon Pricing Calculator"
+            />
+            <span>1003 Form</span>
+          </a>
+          <Link
+            className="ml-4 flex justify-center items-center gap-1"
+            href="/"
+          >
+            <Image
+              src="/3.png"
+              width={24}
+              height={24}
+              alt="Icon PDF ChatBot"
+            />
+            <span>PDF ChatBot</span>
+          </Link>
         </div>
         <div></div>
       </header>
