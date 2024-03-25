@@ -28,10 +28,24 @@ export function AppContext({ children }) {
       )
     }, [])
 
-    useEffect(()=>{
+    const searchFileInfoById = (list) => {
       if (selectedFileId) {
-        const fileSelected = files.find( f => f.driveId == selectedFileId )
+        const fileSelected = list.find( f => f.id == selectedFileId )
         setSelectedFile(fileSelected)
+      }
+    }
+
+    useEffect(()=>{
+      if (files.length == 0 ) {
+        GetAllFiles()
+        .then( res => {
+            if ( res && res.success ) {
+              const list = res?.data?.map( l => new ChatFile(l.fileName, l.fileId, `https://drive.google.com/file/d/${l.fileId}/view`, l.fileType, l.assistantId, l.assistantFileId ) )
+              searchFileInfoById(list)
+            }
+        })
+      } else {
+        searchFileInfoById(files)
       }
     }, [selectedFileId])
     
