@@ -9,31 +9,31 @@ export default function TableBodyComponent() {
   } = useContextHook()
 
   return (
-    <tbody className="divide-y divide-gray-200 dark:bg-slate-800">
-        {files.length > 0 ?
-          files.map((file) => (
-            <TableRow key={file.id} file={file} />
-          ))
-          :
-          <tr className="text-gray-500">
-            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white">
-              No files to display.
-            </td>
-          </tr>
-        }
+    <tbody className="divide-y divide-gray-200 bg-slate-800">
+      {files.length > 0 ?
+        files.map((file) => (
+          <TableRow key={file.id} file={file} />
+        ))
+        :
+        <tr className="text-gray-500">
+          <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-200">
+            No files to display.
+          </td>
+        </tr>
+      }
     </tbody>)
 }
 
 function TableRow({ file }) {
   return (
     <tr>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-gray-900 dark:text-white w-1/3">
+      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-gray-200 w-1/3">
         {file.title}
       </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-gray-900 dark:text-white w-1/3">
+      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-gray-200 w-1/3">
         {file.type}
       </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-ross-green dark:text-white w-1/3">
+      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-ross-green hover:text-white w-1/3">
         <a href={file.url} target="_blank">LINK</a>
       </td>
       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium flex gap-2 justify-end">

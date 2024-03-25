@@ -17,10 +17,10 @@ function ChatPage() {
   const fileId = query.get("fileId")
   const chatId = query.get("chatId")
 
-  useEffect(()=>{
+  useEffect(() => {
     setSelectedFileId(fileId)
   }, [])
-  
+
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -29,10 +29,10 @@ function ChatPage() {
     const resp = await fetch("/api/chat/retrieveAssistant/", {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({assistantId: chatId}),
-  })
+      body: JSON.stringify({ assistantId: chatId }),
+    })
     return await resp.json()
   }
 
@@ -45,8 +45,8 @@ function ChatPage() {
 
       try {
         const ok = await dataExists()
-        if ( !ok.success ) throw new Error(ok.message)
-        if ( ok.assistant.file_ids.length == 0 ) throw new Error("Assistant does not have any files associated with it")
+        if (!ok.success) throw new Error(ok.message)
+        if (ok.assistant.file_ids.length == 0) throw new Error("Assistant does not have any files associated with it")
         // Enviar la pregunta al chatbot
         const startChat = await AskToChat(inputToSend, chatId)
         let chatResponseStatus = "incolmplete"
@@ -57,7 +57,7 @@ function ChatPage() {
           chatResponseStatus = chat?.status
           if (chatResponseStatus != "completed") await new Promise(resolve => setTimeout(resolve, 3500));
         } while (chatResponseStatus != "completed");
-        
+
         setMessages((messages) => [
           ...messages,
           { text: "IA: " + chat?.message, sender: "ia" },
@@ -75,7 +75,7 @@ function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-full bg-white border rounded overflow-hidden">
+    <div className="flex flex-col md:flex-row h-full bg-gray-100 border rounded overflow-hidden">
       {/* Contenedor del chat */}
       <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col p-4">
         {/* Mensajes del chat */}
@@ -99,7 +99,7 @@ function ChatPage() {
         </div>
       </div>
 
-      <FileView/>
+      <FileView />
     </div>
   );
 }

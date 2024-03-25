@@ -5,7 +5,7 @@ export default function Header() {
   const BASE_URL = "https://david-ross-loans-cardinal-financial.vercel.app/"
 
     return(
-      <header className="w-full p-4 grid grid-cols-2 gap-2 place-items-center shadow-md bg-white dark:bg-slate-700 dark:text-white">
+      <header className="w-full p-4 grid grid-cols-2 gap-2 place-items-center shadow-md bg-slate-700 text-white">
         <div className="flex justify-center items-center">
           <img
               src="favicon.ico"

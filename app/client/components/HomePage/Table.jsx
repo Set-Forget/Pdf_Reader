@@ -7,26 +7,26 @@ export default function TableComponent() {
     loadFiles
   } = useContextHook()
 
-    return(
-    <table className="min-w-full divide-y divide-gray-300 bg-gray-50 dark:bg-slate-800 rounded-lg">
-        <thead>
-          <tr>
-            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white uppercase">
-              File Name
-            </th>
-            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 dark:text-white uppercase">
-              File Type
-            </th>
-            <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm text-gray-900 dark:text-white uppercase">
-              File Link
-            </th>
-          </tr>
-        </thead>
-        {loadFiles ?
-          <TableSkeletonComponent />
-          :
-          <TableBodyComponent />
-        }
+  return (
+    <table className="min-w-full divide-y divide-gray-300 bg-gray-50 bg-slate-800 rounded-lg">
+      <thead>
+        <tr>
+          <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-200 uppercase">
+            File Name
+          </th>
+          <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm text-gray-200 uppercase">
+            File Type
+          </th>
+          <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm text-gray-200 uppercase">
+            File Link
+          </th>
+        </tr>
+      </thead>
+      {loadFiles ?
+        <TableSkeletonComponent />
+        :
+        <TableBodyComponent />
+      }
     </table>
-    )
+  )
 }
